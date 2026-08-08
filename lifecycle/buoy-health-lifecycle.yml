@@ -1,0 +1,84 @@
+generated: '2026-08-08'
+method: searched
+source: >-
+  openapi/buoy-health-symptom-checker-openapi.yml, https://buoyhealth.readme.io/reference,
+  https://www.buoyhealth.com/developers
+versioning:
+  scheme: uri-path
+  current: v2
+  evidence: >-
+    Both declared servers end in /symptom-checker/v2, and info.version is "v2.0". The ReadMe project's
+    API registry entry is published under the version handle @buoyhealth/v2.0.
+  docs: https://buoyhealth.readme.io/reference/interviews_anonymous
+  prior_versions_documented: false
+  note: No v1 documentation is publicly reachable; only v2.0 is published on ReadMe.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation or sunset policy is published anywhere on buoyhealth.com or the ReadMe docs, and no
+    operation in the OpenAPI carries `deprecated: true`. RFC 8594 Sunset/Deprecation headers are not
+    documented.
+deprecated_operations: []
+status_page:
+  url: null
+  present: false
+  probed:
+  - url: https://status.buoyhealth.com/
+    result: DNS does not resolve
+  - url: https://www.buoyhealth.com/status
+    status: 404
+  note: >-
+    Buoy operates no public status page. For a clinical triage dependency embedded in a health
+    system's patient-facing front door, this is the most consequential operational gap in the profile.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA is published publicly. The API Terms of Service PDF
+    (https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf, HTTP 200) is the only public
+    contractual document.
+changelog:
+  url: null
+  present: false
+  probed:
+  - url: https://buoyhealth.readme.io/changelog
+    status: 404
+  - url: https://www.buoyhealth.com/changelog
+    status: 404
+  note: >-
+    ReadMe ships a changelog feature that Buoy has not enabled. The Postman workspace mirror was last
+    updated 2021-06-29, and the first-party npm package was last published 2022 — there is no public
+    signal of the API's release cadence.
+support:
+  contact: https://www.buoyhealth.com/contact-us
+  security_contact: 'mailto:security@buoyhealth.com'
+  api_contact: 'mailto:alex.nixon@buoyhealth.com'
+  api_contact_source: openapi info.contact.email
+  broken:
+  - url: https://www.buoyhealth.com/support
+    status: 301
+    redirects_to: https://help.buoyhealth.com/
+    result: >-
+      Redirect target does not resolve (NXDOMAIN). The site-wide "Get help" / "Contact support" links
+      on buoyhealth.com are therefore dead.
+terms:
+  general: https://www.buoyhealth.com/terms
+  api_specific: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  api_specific_format: pdf
+  api_specific_source: openapi info.termsOfService
+x-evidence:
+- url: https://buoyhealth.readme.io/changelog
+  http_status: 404
+  fetched: '2026-08-08'
+- url: https://www.buoyhealth.com/status
+  http_status: 404
+  fetched: '2026-08-08'
+- url: https://www.buoyhealth.com/support
+  http_status: 301
+  fetched: '2026-08-08'
+- url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  http_status: 200
+  fetched: '2026-08-08'

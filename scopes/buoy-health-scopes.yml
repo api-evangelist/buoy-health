@@ -1,0 +1,97 @@
+generated: '2026-08-08'
+method: searched
+source: https://auth.buoyhealth.com/.well-known/openid-configuration
+docs: https://buoyhealth.readme.io/reference/interviews_anonymous
+note: >-
+  The OpenAPI declares a single oauth2 authorizationCode scheme ("Bearer") with an EMPTY scopes map,
+  and no operation carries a scope requirement — the Symptom Checker API is scope-flat: a valid bearer
+  token grants the whole 19-operation surface. The scopes below are the ones the authorization server
+  itself advertises in its anonymous RFC 8414 / OIDC discovery documents; they are OIDC identity
+  scopes issued by the Auth0-backed issuer, NOT Buoy API resource scopes. No public Buoy scope or
+  permissions reference page was found.
+schemes:
+- name: Bearer
+  source: openapi/buoy-health-symptom-checker-openapi.yml
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+    tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+    scopes: []
+  description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+issuers:
+- environment: production
+  issuer: https://auth.buoyhealth.com/
+  discovery: https://auth.buoyhealth.com/.well-known/openid-configuration
+  http_status: 200
+- environment: sandbox
+  issuer: https://auth.sandbox.buoyhealth.com/
+  discovery: https://auth.sandbox.buoyhealth.com/.well-known/openid-configuration
+  http_status: 200
+scopes:
+- scope: openid
+  description: Request an OpenID Connect ID token for the authenticating subject.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: profile
+  description: Basic profile claims for the authenticating subject.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: offline_access
+  description: Issue a refresh token so the client can renew access without user interaction.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: name
+  description: The subject's full name claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: given_name
+  description: The subject's given name claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: family_name
+  description: The subject's family name claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: nickname
+  description: The subject's nickname claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: email
+  description: The subject's email address claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: email_verified
+  description: Whether the subject's email address has been verified.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: picture
+  description: The subject's profile picture claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: created_at
+  description: When the subject's identity record was created.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: identities
+  description: Linked identity-provider records for the subject.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: phone
+  description: The subject's phone number claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+- scope: address
+  description: The subject's address claim.
+  kind: oidc-identity
+  sources: [well-known/buoy-health-openid-configuration.json]
+x-evidence:
+- url: https://auth.buoyhealth.com/.well-known/openid-configuration
+  http_status: 200
+  fetched: '2026-08-08'
+- url: https://auth.buoyhealth.com/.well-known/oauth-authorization-server
+  http_status: 200
+  fetched: '2026-08-08'
+- url: https://auth.sandbox.buoyhealth.com/.well-known/openid-configuration
+  http_status: 200
+  fetched: '2026-08-08'

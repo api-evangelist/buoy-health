@@ -1,0 +1,61 @@
+generated: '2026-08-08'
+method: generated
+source: openapi/buoy-health-symptom-checker-openapi.yml
+note: >-
+  Buoy publishes no AGENTS.md or first-party agent skills. These are API-Evangelist-generated
+  operating instructions, grounded exclusively in operationIds that exist verbatim in the harvested
+  OpenAPI 3.0.1, plus the conventions and error semantics captured in this repository. Because this is
+  a clinical triage API, every skill carries an explicit emergency-escalation rule.
+skills:
+- file: buoy-health-run-triage-interview.md
+  name: Run a Buoy triage interview end to end
+  description: >-
+    Create an anonymous interview, submit and clarify a chief complaint, walk the adaptive question
+    sequence, and read the differential result including the emergency alarm flag.
+  api: openapi/buoy-health-symptom-checker-openapi.yml
+  operations:
+  - interviews_anonymous
+  - queries_list
+  - complaints_create
+  - complaints_read
+  - complaints_update
+  - questions_list
+  - questions_read
+  - questions_update
+  - interviews_read
+  - interviews_update
+  - results_read
+- file: buoy-health-explain-triage-reasoning.md
+  name: Explain why Buoy asked a question
+  description: >-
+    Surface the candidate diagnosis and predictors behind any interview question for clinical review,
+    model transparency, or answering "why are you asking me this?".
+  api: openapi/buoy-health-symptom-checker-openapi.yml
+  operations:
+  - questions_list
+  - questions_read
+  - questions_explain
+  - interviews_read
+- file: buoy-health-capture-care-intent.md
+  name: Capture care-navigation intent
+  description: >-
+    Record what a user intended to do before triage and decided to do after it, so an integrator can
+    measure whether triage moved them to the right level of care.
+  api: openapi/buoy-health-symptom-checker-openapi.yml
+  operations:
+  - intents_create
+  - intents_list
+  - intents_read
+  - intents_update
+  - intents_delete
+  - results_read
+safety:
+  clinical: true
+  rule: >-
+    Every skill requires that an `alarm: true` result or `should_display_alarm: true` interview state
+    be surfaced verbatim and immediately, and that the differential never be re-ranked or presented as
+    a diagnosis.
+coverage:
+  operations_total: 19
+  operations_covered: 17
+  not_covered: [complaints_list, complaints_delete]

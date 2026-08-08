@@ -1,0 +1,94 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/buoy-health-symptom-checker-openapi.yml
+docs: https://buoyhealth.readme.io/reference/interviews_anonymous
+summary: >-
+  Buoy runs a genuinely separate sandbox ENVIRONMENT — distinct API host, distinct Auth0 issuer, and
+  distinct credentials — declared as the FIRST entry in the OpenAPI servers list. What it does not
+  publish is any sandbox self-service: there are no test credentials, no magic values, no fixture or
+  trigger tooling, and no way to obtain a sandbox client without contacting Buoy. Environment
+  separation is real; onboarding into it is sales-gated.
+environments:
+- name: sandbox
+  default_in_spec: true
+  api_base: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+  issuer: https://auth.sandbox.buoyhealth.com/
+  authorization_endpoint: https://auth.sandbox.buoyhealth.com/authorize
+  token_endpoint: https://auth.sandbox.buoyhealth.com/oauth/token
+  discovery: https://auth.sandbox.buoyhealth.com/.well-known/openid-configuration
+  discovery_status: 200
+- name: production
+  default_in_spec: false
+  api_base: https://api.buoyhealth.com/symptom-checker/v2
+  issuer: https://auth.buoyhealth.com/
+  authorization_endpoint: https://auth.buoyhealth.com/authorize
+  token_endpoint: https://auth.buoyhealth.com/oauth/token
+  discovery: https://auth.buoyhealth.com/.well-known/openid-configuration
+  discovery_status: 200
+separation:
+  style: separate-host-and-issuer
+  key_prefixes: null
+  mode_flag: null
+  detail: >-
+    Test and live are separated by hostname and OAuth issuer, not by a key prefix or a mode parameter.
+    A token minted by the sandbox issuer will not authenticate against api.buoyhealth.com and vice
+    versa. Because the OpenAPI's oauth2 flow hardcodes the SANDBOX endpoints while listing production
+    as a server, a client generated from the spec defaults to sandbox auth against whichever host it
+    is pointed at — the most likely source of a spurious 401.
+credentials:
+  self_serve: false
+  obtain_via: https://www.buoyhealth.com/contact-us
+  detail: >-
+    The public Postman workspace states plainly: "In order to use this collection you must first have
+    an API key. Learn more by visiting our developer home." The developer page's only call to action
+    is "Request a demo". No signup, trial, or free tier is published.
+test_values:
+  published: false
+  test_identifiers: []
+  test_cards: []
+  detail: >-
+    No magic test values are published. This is a symptom-triage API rather than a payments API, so
+    the analogous fixtures would be canned symptom scripts that deterministically reach a known
+    differential or trip the emergency `alarm` flag — Buoy publishes none, so an integrator cannot
+    write a regression test for the single highest-stakes behaviour in the product.
+test_clock:
+  supported: false
+fixtures:
+  supported: false
+triggers:
+  supported: false
+safe_by_design:
+  anonymous_interviews: >-
+    interviews_anonymous creates a de-identified interview from age and sex alone, requiring no
+    authenticated end user and storing no profile. It is the natural operation to exercise first in
+    any environment, and the one the ReadMe reference opens on.
+collections:
+  postman:
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+    publisher: Buoy Health
+    visibility: public
+    collections: 1
+    created: '2021-06-10'
+    updated: '2021-06-29'
+    note: >-
+      Verified first-party via the Postman search API (publisherHandle buoy-health-api, publisherName
+      "Buoy Health"). The workspace HTML returns an identical 100855-byte SPA shell for every path
+      including nonexistent ones, so the 200 alone is not evidence — the workspace record is.
+gaps:
+- id: no-sandbox-self-serve
+  detail: >-
+    A fully separated sandbox exists and nobody can reach it without a sales conversation. Issuing
+    self-serve sandbox credentials would let integrators evaluate the triage engine before committing.
+- id: no-deterministic-fixtures
+  detail: >-
+    Without published symptom scripts that reliably produce a given differential or raise the alarm
+    flag, no integrator can regression-test emergency escalation — the behaviour Buoy markets as its
+    "#1 priority".
+x-evidence:
+- url: https://api.sandbox.buoyhealth.com/.well-known/openid-configuration
+  http_status: 404
+  fetched: '2026-08-08'
+  note: API host publishes no discovery; the issuer host does.
+- url: https://auth.sandbox.buoyhealth.com/.well-known/openid-configuration
+  http_status: 200
+  fetched: '2026-08-08'

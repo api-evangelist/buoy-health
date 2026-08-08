@@ -1,0 +1,75 @@
+generated: '2026-08-08'
+method: searched
+source: >-
+  npm registry search + registry metadata, PyPI, RubyGems, Maven Central, GitHub org API,
+  https://buoyhealth.readme.io/reference
+summary: >-
+  Buoy publishes NO client SDK for the Symptom Checker API in any language. One first-party npm
+  package exists — buoy-breadcrumbs — but it is an internal React UI component, not an API client, and
+  it was last published in 2022. Integrators are expected to hand-roll HTTP against the OpenAPI or
+  import the public Postman collection.
+sdk_count: 0
+packages:
+- language: javascript
+  registry: npm
+  name: buoy-breadcrumbs
+  version: 7.0.3
+  url: https://www.npmjs.com/package/buoy-breadcrumbs
+  install: npm install buoy-breadcrumbs
+  official: true
+  api_client: false
+  description: Breadcrumb component for Buoy Health.
+  last_published: '2022-04-12'
+  evidence: >-
+    npm registry metadata lists author "Buoy Health" and 13 maintainers, 11 of them on @buoyhealth.com
+    addresses (sue.aman@, mijail@, julia@, ricardo.roque@, jonathan.espiard@, brian.kwon@,
+    daniel.schwartz@, jeff.peterson@, matt.hrono@, logan.patino@, nate@).
+  note: >-
+    A front-end breadcrumb widget from Buoy's own web app. Catalogued because it is genuinely
+    first-party, but it does not call the Symptom Checker API and must not be counted as an SDK.
+registries_checked:
+- registry: npm
+  query: 'buoy health / @buoyhealth/* / buoy-health / buoyhealth / buoy-api'
+  first_party_hits: 1
+  note: >-
+    The @buoy-gg/* and @react-buoy/* scopes returned by search are React Native devtools from an
+    unrelated publisher, not Buoy Health.
+- registry: pypi
+  checked: [buoy, buoyhealth, buoy-health]
+  first_party_hits: 0
+  note: 'PyPI `buoy` (v0.1, author C. Titus Brown, ged-lab) is unrelated.'
+- registry: rubygems
+  checked: [buoy]
+  first_party_hits: 0
+- registry: maven-central
+  checked: [com.buoyhealth]
+  first_party_hits: 0
+- registry: nuget
+  first_party_hits: 0
+- registry: pkg.go.dev
+  first_party_hits: 0
+- registry: packagist
+  first_party_hits: 0
+- registry: crates.io
+  first_party_hits: 0
+source_repositories:
+  github_org: https://github.com/buoyhealth
+  public_repos: 0
+  org_created: '2026-07-24'
+  note: >-
+    The github.com/buoyhealth org resolves but holds ZERO public repositories and was created
+    2026-07-24. It carries no name, description, or website, so it cannot be attributed to Buoy Health
+    as an engineering presence and is deliberately NOT wired as a GitHubOrganization pointer.
+alternatives_for_integrators:
+- kind: openapi
+  url: openapi/buoy-health-symptom-checker-openapi.yml
+  note: OpenAPI 3.0.1 — generate a client with openapi-generator or Kiota.
+- kind: postman
+  url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  note: Public first-party collection, last updated 2021-06-29.
+gaps:
+- id: no-api-client-sdk
+  detail: >-
+    Zero client libraries for an API whose buyers are health systems and payers — the integration
+    teams least likely to want to hand-roll OAuth 2.0 plus a stateful interview state machine. A
+    generated TypeScript and Python client from the existing OpenAPI would be close to free.

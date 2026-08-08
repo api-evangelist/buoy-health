@@ -1,0 +1,203 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/buoy-health-symptom-checker-openapi.yml
+summary: >-
+  Six addressable entities hang off a single root aggregate — the Interview. Every entity is keyed by
+  an opaque UUID `token` with no type prefix, and every child carries an `interview` back-reference.
+  The graph is a star, not a mesh: Complaint, Intent, Question and Result all belong to exactly one
+  Interview and none reference each other. Profile and Location are embedded value objects on the
+  Interview rather than independently addressable resources.
+identifiers:
+  style: uuid
+  field: token
+  prefixed: false
+  note: >-
+    Tokens are bare UUID4s. Nothing in an identifier distinguishes a complaint token from an intent
+    token, so a misrouted token surfaces only as a 404.
+entities:
+- name: Interview
+  root: true
+  schema: ReadUpdateInterviewSchema
+  key: token
+  path: /interviews/{interview_token}/
+  operations: [interviews_anonymous, interviews_read, interviews_update]
+  fields: [token, start_time, end_time, profile, location, mode, should_display_alarm, _links, _msg]
+  description: >-
+    The triage session aggregate. Holds the de-identified profile, an optional location, the current
+    mode (input / protocol / differential), an alarm display flag, and the hypermedia _links that
+    advance the state machine.
+- name: Complaint
+  schema: ReadComplaintSchema
+  key: token
+  path: /complaints/{complaint_token}/
+  operations: [complaints_list, complaints_create, complaints_read, complaints_update, complaints_delete]
+  fields: [token, interview, query, interpretations, clarification, _links]
+  description: >-
+    A chief complaint submitted as free text (`query`). The AI returns candidate `interpretations`;
+    the client picks one and writes it back as the `clarification`.
+- name: Interpretation
+  schema: ReadInterpretationSchema
+  key: token
+  addressable: false
+  fields: [token, title, description]
+  description: An AI-generated candidate reading of a free-text complaint. Embedded in Complaint, never fetched directly.
+- name: Clarification
+  schema: ReadClarificationSchema
+  key: token
+  addressable: false
+  fields: [token]
+  description: The interpretation the user selected, written back onto the Complaint.
+- name: Intent
+  schema: IntentSchema
+  key: token
+  path: /intents/{intent_token}/
+  operations: [intents_list, intents_create, intents_read, intents_update, intents_delete]
+  fields: [token, interview, event, decision]
+  description: >-
+    A captured user intention at a lifecycle event (INTERVIEW_START or INTERVIEW_RESULT) with the
+    decision the user made — the hook integrators use to measure care-navigation outcomes.
+- name: Question
+  schema: ReadQuestionSchema
+  key: token
+  path: /questions/{question_token}/
+  operations: [questions_list, questions_read, questions_update, questions_explain]
+  fields: [token, text, choice, media, options, answer, interview, media_alttext, _links]
+  description: >-
+    An adaptively generated interview question. `options` are the selectable answers; `answer` is the
+    user's selection. Updating an answer truncates and regenerates every downstream question.
+- name: Option
+  schema: ReadOptionSchema
+  key: token
+  addressable: false
+  fields: [token, text, media, exclusive, media_alttext, free_text]
+  description: A selectable answer choice on a Question. `exclusive` marks a choice that cannot be combined with others.
+- name: Answer
+  schema: ReadAnswerSchema
+  addressable: false
+  description: The user's selection for a Question, written via questions_update.
+- name: QuestionExplanation
+  schema: QuestionExplainSchema
+  key: token
+  path: /questions/{question_token}/explain/
+  operations: [questions_explain]
+  fields: [token, interview, diagnosis, predictors]
+  description: >-
+    Explainability projection of a Question — the candidate diagnosis and the predictors that caused
+    the engine to ask it. The clinical-transparency surface of the API.
+- name: Result
+  schema: ReadResultsSchema
+  key: token
+  path: /results/{result_token}/
+  operations: [results_read]
+  fields: [token, alarm, undiagnosed, differential]
+  description: >-
+    The terminal output — a ranked `differential` of candidate conditions with an `alarm` flag for
+    emergency escalation and an `undiagnosed` flag when the engine reached no conclusion. Reached by
+    following _links.result, never listed.
+- name: Profile
+  schema: ReadProfileSchema
+  key: token
+  addressable: false
+  embedded_in: Interview
+  fields: [tag, token, first_name, last_name, phone, is_self, age, birthday, sex, race, height, weight, bmi]
+  description: >-
+    Demographics driving the triage model. For the anonymous flow only age and sex are required and
+    no identifying fields are stored — this is the de-identification boundary.
+- name: Location
+  schema: LocationProperty
+  addressable: false
+  embedded_in: Interview
+  fields: [latitude, longitude, postal_code, country]
+  description: Optional geography used to steer care-resource handoffs to nearby services.
+- name: AutoCompleteQuery
+  schema: ReadAutoCompleteQuerySchema
+  key: null
+  path: /queries/
+  operations: [queries_list]
+  fields: [text, tag, suggestions]
+  description: >-
+    Stateless symptom autocomplete. The only operation in the API not scoped to an interview.
+relationships:
+- from: Interview
+  to: Complaint
+  type: has_many
+  via: interview
+  evidence: ReadComplaintSchema.interview (InterviewTokenProperty); complaints_list requires ?interview=
+- from: Complaint
+  to: Interview
+  type: belongs_to
+  via: interview
+- from: Interview
+  to: Intent
+  type: has_many
+  via: interview
+  evidence: IntentSchema.interview; intents_list requires ?interview=
+- from: Intent
+  to: Interview
+  type: belongs_to
+  via: interview
+- from: Interview
+  to: Question
+  type: has_many
+  via: interview
+  evidence: ReadQuestionSchema.interview; questions_list requires ?interview=
+- from: Question
+  to: Interview
+  type: belongs_to
+  via: interview
+- from: Interview
+  to: Result
+  type: has_one
+  via: _links.result
+  evidence: LinksProperty.result carries the absolute URI of the interview's result
+- from: Interview
+  to: Profile
+  type: has_one
+  via: profile
+  embedded: true
+  evidence: ReadUpdateInterviewSchema.profile $ref ReadProfileSchema
+- from: Interview
+  to: Location
+  type: has_one
+  via: location
+  embedded: true
+- from: Complaint
+  to: Interpretation
+  type: has_many
+  via: interpretations
+  embedded: true
+- from: Complaint
+  to: Clarification
+  type: has_one
+  via: clarification
+  embedded: true
+- from: Question
+  to: Option
+  type: has_many
+  via: options
+  embedded: true
+- from: Question
+  to: Answer
+  type: has_one
+  via: answer
+  embedded: true
+- from: Question
+  to: QuestionExplanation
+  type: has_one
+  via: /questions/{question_token}/explain/
+  evidence: sub-resource path; QuestionExplainSchema.token matches the question token
+cascades:
+- trigger: complaints_delete
+  effect: Interview resets to `input` mode and every question answered after that complaint is discarded.
+- trigger: complaints_create
+  effect: If the interview was in `protocol` or `differential` mode it is reset to `input`.
+- trigger: questions_update
+  effect: >-
+    The interview truncates to that question's position and regenerates the entire downstream
+    sequence, so previously read Question tokens become stale.
+counts:
+  addressable_entities: 7
+  embedded_value_objects: 6
+  relationships: 15
+  component_schemas_total: 80
+render: null

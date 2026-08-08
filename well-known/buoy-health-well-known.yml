@@ -1,0 +1,140 @@
+generated: '2026-08-08'
+method: searched
+source: live probes of every apis.yml baseURL host, every OpenAPI servers[] host, and the docs host
+summary: >-
+  The two Auth0-backed authorization-server hosts (production and sandbox) publish anonymous OIDC
+  discovery and RFC 8414 authorization-server metadata. No other well-known document was found on any
+  Buoy host: no security.txt, no api-catalog, no ai-plugin.json, and no A2A agent card at either the
+  canonical /.well-known/agent-card.json or the legacy /.well-known/agent.json path.
+hosts:
+- host: https://auth.buoyhealth.com
+  role: authorization server (production)
+  documents:
+  - path: /.well-known/openid-configuration
+    spec: OpenID Connect Discovery 1.0
+    status: 200
+    content_type: application/json
+    file: buoy-health-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    spec: RFC 8414
+    status: 200
+    content_type: application/json
+    file: buoy-health-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    spec: RFC 9728
+    status: 404
+  - path: /.well-known/security.txt
+    spec: RFC 9116
+    status: 404
+  - path: /.well-known/api-catalog
+    spec: RFC 9727
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    spec: A2A 1.0.0
+    status: 404
+  - path: /.well-known/agent.json
+    spec: A2A pre-0.3 legacy
+    status: 404
+- host: https://auth.sandbox.buoyhealth.com
+  role: authorization server (sandbox)
+  documents:
+  - path: /.well-known/openid-configuration
+    spec: OpenID Connect Discovery 1.0
+    status: 200
+    content_type: application/json
+    file: buoy-health-sandbox-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    spec: RFC 8414
+    status: 200
+    content_type: application/json
+    file: buoy-health-sandbox-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.buoyhealth.com
+  role: API host (production)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.sandbox.buoyhealth.com
+  role: API host (sandbox)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.buoyhealth.com
+  role: marketing site + developer portal
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://buoyhealth.readme.io
+  role: API documentation (ReadMe)
+  documents:
+  - path: /llms.txt
+    spec: llms.txt
+    status: 200
+    content_type: text/plain
+    note: saved verbatim to llms/buoy-health-llms.txt
+  - path: /llms-full.txt
+    status: 429
+    note: rate-limited by ReadMe; not retried, not saved
+  - path: /.well-known/agent-card.json
+    status: 404
+gaps:
+- id: no-security-txt
+  detail: >-
+    No RFC 9116 security.txt on any Buoy host, even though the public security page publishes a real
+    security contact (security@buoyhealth.com). Publishing /.well-known/security.txt would make that
+    contact machine-discoverable.
+- id: no-oauth-protected-resource
+  detail: >-
+    The API hosts publish no RFC 9728 protected-resource metadata, so a client cannot mechanically
+    discover which authorization server protects api.buoyhealth.com — the binding is documentation-only.
+- id: no-api-catalog
+  detail: No RFC 9727 /.well-known/api-catalog linking Buoy's published API descriptions.

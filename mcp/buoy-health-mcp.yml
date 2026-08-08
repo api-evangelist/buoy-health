@@ -1,0 +1,158 @@
+generated: '2026-08-08'
+method: derived
+status: candidate
+source: openapi/buoy-health-symptom-checker-openapi.yml
+summary: >-
+  Buoy publishes NO MCP server. This is an API-Evangelist-derived CANDIDATE tool surface, mapped one
+  tool per real OpenAPI operationId so an integrator can stand one up without guessing. Each tool's
+  real input contract is the parameters + requestBody of its backing operation in the spec. Nothing
+  here is served by Buoy.
+searched:
+- target: https://mcp.buoyhealth.com/
+  result: DNS does not resolve
+- target: https://buoyhealth.readme.io/llms.txt
+  result: 200 — lists 20 API reference pages, no MCP server
+- target: MCP registries / @modelcontextprotocol npm scope
+  result: no Buoy Health server published
+server:
+  name: buoy-health
+  transport: http
+  url: null
+  published: false
+authentication:
+  required: true
+  style: oauth2-bearer
+  detail: >-
+    Every backing operation requires an OAuth 2.0 bearer token from the environment-matched Auth0
+    issuer. A server implementing these tools must carry the token per call; there is no anonymous
+    operation in the API.
+safety:
+  clinical: true
+  detail: >-
+    This is a medical triage surface. `results_read` can return an emergency `alarm` flag, and
+    `questions_explain` exposes the diagnosis and predictors behind a question. Any agent wired to
+    these tools must surface the alarm verbatim and must not paraphrase or suppress a differential.
+    The tools below are classified accordingly.
+tools:
+- name: create_anonymous_interview
+  description: Create a new de-identified triage interview from basic demographics (age and sex at minimum).
+  category: interview
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#interviews_anonymous
+- name: read_interview
+  description: Describe the current state of an interview, including its mode and hypermedia _links.
+  category: interview
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#interviews_read
+- name: update_interview_mode
+  description: Switch an interview between the input, protocol and differential modes.
+  category: interview
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#interviews_update
+- name: list_complaints
+  description: List the chief complaints attached to an interview.
+  category: complaint
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#complaints_list
+- name: create_complaint
+  description: Add a free-text chief complaint to an interview and receive AI interpretations to clarify.
+  category: complaint
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#complaints_create
+- name: read_complaint
+  description: Read the current state of one complaint, including its interpretations and clarification.
+  category: complaint
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#complaints_read
+- name: clarify_complaint
+  description: Set the clarification on a complaint by choosing one of the AI-generated interpretations.
+  category: complaint
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#complaints_update
+- name: delete_complaint
+  description: Delete a complaint. Resets the interview to input mode and discards downstream answers.
+  category: complaint
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#complaints_delete
+- name: autocomplete_symptom_query
+  description: Retrieve symptom autocomplete suggestions for partial user text. The only stateless operation.
+  category: query
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#queries_list
+- name: list_intents
+  description: List the captured user intents on an interview.
+  category: intent
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#intents_list
+- name: create_intent
+  description: Record a user intent at INTERVIEW_START or INTERVIEW_RESULT with the decision made.
+  category: intent
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#intents_create
+- name: read_intent
+  description: Read one captured intent.
+  category: intent
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#intents_read
+- name: update_intent
+  description: Update a captured intent's event or decision.
+  category: intent
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#intents_update
+- name: delete_intent
+  description: Delete a captured intent.
+  category: intent
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#intents_delete
+- name: list_questions
+  description: List the interview's questions in sequence.
+  category: question
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_list
+- name: read_question
+  description: Read one interview question with its selectable options and media.
+  category: question
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_read
+- name: answer_question
+  description: >-
+    Answer an interview question. Editing an earlier answer truncates the interview at that point and
+    regenerates every downstream question.
+  category: question
+  action_class: acting
+  consequence: write
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_update
+- name: explain_question
+  description: Return the candidate diagnosis and predictors explaining why a question was asked.
+  category: question
+  action_class: connected
+  consequence: read
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_explain
+- name: read_result
+  description: >-
+    Read the interview result — the ranked differential, the undiagnosed flag, and the emergency alarm
+    flag. Safety-critical output.
+  category: result
+  action_class: connected
+  consequence: safety-critical
+  source_operation: openapi/buoy-health-symptom-checker-openapi.yml#results_read
+coverage:
+  rest_operations_total: 19
+  tools_derived: 19
+  operations_without_a_tool: 0

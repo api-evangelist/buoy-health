@@ -1,23 +1,183 @@
 aid: buoy-health
 name: Buoy Health
-description: 'Buoy Health is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Buoy Health is a Boston-based digital health company whose clinically-trained AI symptom checker and
+  triage engine is offered to health systems, payers and employers as an embeddable API. The Buoy
+  Symptom Checker API v2.0 exposes a conversational triage interview as REST resources — interviews,
+  complaints, queries, intents, questions and results — so an integrator can create a de-identified
+  anonymous interview from basic demographics, accept a chief complaint, walk an adaptively generated
+  question sequence, and read back a differential diagnosis with a recommended level of care and
+  customizable care-handoff destinations. The API is OAuth 2.0 protected against an Auth0-backed
+  authorization server with separate sandbox and production environments, is documented on ReadMe with
+  a published OpenAPI 3.0.1 definition and an llms.txt, and Buoy is HITRUST CSF certified.
+image: https://www.buoyhealth.com/cms/images/buoy_logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/buoy-health/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-08'
 modified: '2026-08-08'
 tags:
-- Company
-apis: []
+- symptom-checker
+- medical-triage
+- digital-health
+- healthcare
+- clinical-ai
+- care-navigation
+- patient-engagement
+- diagnosis
+- telehealth
+- oauth2
+apis:
+- name: Buoy Symptom Checker API
+  description: >-
+    REST API for Buoy's AI symptom-checking and triage engine. Create an anonymous (de-identified)
+    interview from age and sex, submit a chief complaint and clarify the AI's interpretations, walk the
+    adaptively generated question sequence, capture user intents, and read the interview result — a
+    differential diagnosis with an alarm flag and a recommended level of care. Hypermedia `_links`
+    navigate the interview to the next question or the result. OpenAPI 3.0.1, 19 operations across six
+    tags, 80 component schemas, secured with an OAuth 2.0 authorization-code flow.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - symptom-checker
+  - medical-triage
+  - digital-health
+  - healthcare
+  - clinical-ai
+  - care-navigation
+  - diagnosis
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-symptom-checker-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Overlay
+    url: overlays/buoy-health-symptom-checker-overlay.yaml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- name: Buoy Authorization Server
+  description: >-
+    Auth0-backed OAuth 2.0 / OpenID Connect authorization server that issues the bearer tokens the Buoy
+    Symptom Checker API requires. Publishes anonymous RFC 8414 authorization-server metadata and OIDC
+    discovery at /.well-known/, with authorization-code (PKCE S256), client-credentials, device-code,
+    refresh-token and password grants, a JWKS endpoint, dynamic client registration and token
+    revocation. Separate sandbox issuer at auth.sandbox.buoyhealth.com.
+  humanURL: https://www.buoyhealth.com/developers
+  baseURL: https://auth.buoyhealth.com/
+  tags:
+  - oauth2
+  - openid-connect
+  - authentication
+  - identity
+  - healthcare
+  properties:
+  - type: WellKnown
+    url: well-known/buoy-health-well-known.yml
+  - type: OpenIDConnect
+    url: well-known/buoy-health-openid-configuration.json
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+common:
+- type: Website
+  url: https://www.buoyhealth.com/
+- type: DeveloperPortal
+  url: https://www.buoyhealth.com/developers
+- type: Documentation
+  url: https://buoyhealth.readme.io/reference/interviews_anonymous
+- type: APIReference
+  url: https://buoyhealth.readme.io/reference
+- type: Support
+  url: https://www.buoyhealth.com/contact-us
+- type: Blog
+  url: https://www.buoyhealth.com/blog
+- type: TermsOfService
+  url: https://www.buoyhealth.com/terms
+- type: PrivacyPolicy
+  url: https://www.buoyhealth.com/privacy
+- type: Postman
+  url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+- type: OpenAPI
+  url: openapi/buoy-health-symptom-checker-openapi.yml
+- type: LLMsTxt
+  url: llms/buoy-health-llms.txt
+- type: WellKnown
+  url: well-known/buoy-health-well-known.yml
+- type: Authentication
+  url: authentication/buoy-health-authentication.yml
+- type: OAuthScopes
+  url: scopes/buoy-health-scopes.yml
+- type: Conventions
+  url: conventions/buoy-health-conventions.yml
+- type: ErrorCatalog
+  url: errors/buoy-health-problem-types.yml
+- type: DataModel
+  url: data-model/buoy-health-data-model.yml
+- type: Lifecycle
+  url: lifecycle/buoy-health-lifecycle.yml
+- type: Conformance
+  url: conformance/buoy-health-conformance.yml
+- type: Compliance
+  url: https://www.buoyhealth.com/security-and-privacy
+- type: Sandbox
+  url: sandbox/buoy-health-sandbox.yml
+- type: Packages
+  url: packages/buoy-health-packages.yml
+- type: MCPServer
+  url: mcp/buoy-health-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Security
+  url: https://www.buoyhealth.com/security-and-privacy
+- type: VulnerabilityDisclosure
+  url: security/buoy-health-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/buoy-health-domain-security.yml
+- type: Overlay
+  url: overlays/buoy-health-symptom-checker-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://www.hiive.com/securities/buoy-health-stock
+x-enrichment:
+  date: '2026-08-08'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
+x-coverage:
+  state: covered
+  reason: null
+  detail: >-
+    Contract discovery beat the JS-rendered docs host: the real OpenAPI 3.0.1 (19 operations, 80
+    schemas) was pulled verbatim from the ReadMe API registry at
+    dash.readme.com/api/v1/api-registry/9blypy14ktiobwma, discovered via the oasPublicUrl embedded in
+    the public reference page. A first-party llms.txt, anonymous OIDC/RFC 8414 discovery on both auth
+    issuers, and a verified public Postman workspace were all captured. Sandbox credentials remain
+    sales-gated.
+  evidence:
+  - url: https://dash.readme.com/api/v1/api-registry/9blypy14ktiobwma
+    status: 200
+  - url: https://buoyhealth.readme.io/llms.txt
+    status: 200
+  - url: https://auth.buoyhealth.com/.well-known/openid-configuration
+    status: 200
+  checked: '2026-08-08'

@@ -1,0 +1,24 @@
+# Buoy Health Documentation
+
+> Buoy's symptom checker API allows clients to embed an artificially intelligent chat-based medical triage tool into their applications and services. Users can chat about their symptoms with Buoy and, from causes to severity, get clinical insight into what may going on.
+
+## API Reference
+- [Create anonymous interview](https://buoyhealth.readme.io/reference/interviews_anonymous.md): Creates a new anonymous interview.  This endpoint uses basic demographic information (age and sex at minimum) to create a de-identified interview. It does not require an authenticated user or store user information with a specific profile in Buoy.
+- [Read interview](https://buoyhealth.readme.io/reference/interviews_read.md): Describes an interview instance.
+- [Update interview](https://buoyhealth.readme.io/reference/interviews_update.md): Updates the interview operation mode one of the three modes: input, protocol, or differential.  For more information on the differences of the interview modes, please refer to the [Interviews explainer page.](doc:explainer-interviews)
+- [List complaints](https://buoyhealth.readme.io/reference/complaints_list.md): Returns a list of complaints associated with an interview.
+- [Create complaint](https://buoyhealth.readme.io/reference/complaints_create.md): Adds a chief complaint to an interview.  The client should not expect that an interpretation will be returned for all user-generated complaints. The AI will do its best to interpret the query, but it is not guaranteed to succeed in finding appropriate interpretation matches.  In instances where no interpretations are returned, the user should be asked to submit a new query. If a complaint is accepted while the interview is in the "protocol" or "differential" mode, the interview will be reset to the "input" mode.
+- [Read complaint](https://buoyhealth.readme.io/reference/complaints_read.md): Returns an object describing the current state of a complaint.
+- [Update complaint](https://buoyhealth.readme.io/reference/complaints_update.md): Updates a complaint with a clarification chosen from an AI generated list of interpretations.
+- [Delete complaint](https://buoyhealth.readme.io/reference/complaints_delete.md): Deletes a complaint.  Deleting a complaint will automatically reset the interview to the "input" mode and removes any complaints or questions answered that previously followed the complaint.
+- [List queries](https://buoyhealth.readme.io/reference/queries_list.md): Retrieves autocomplete text for user queries.
+- [List intents](https://buoyhealth.readme.io/reference/intents_list.md): Returns a list of intents associated with an interview.
+- [Create intent](https://buoyhealth.readme.io/reference/intents_create.md): Creates a new intent.  Intents gathered at the start of an interview (or after entering complaints) should be submitted with the "INTERVIEW_START" event. Intents gathered at the end of an interview should be submitted with the "INTERVIEW_RESULT" event. An empty string ("") should always be submitted in the detail parameter.
+- [Read intent](https://buoyhealth.readme.io/reference/intents_read.md): Returns an object describing the current state of an intent.
+- [Update intent](https://buoyhealth.readme.io/reference/intents_update.md): Updates an intent.
+- [Delete intent](https://buoyhealth.readme.io/reference/intents_delete.md): Deletes an intent.
+- [List questions](https://buoyhealth.readme.io/reference/questions_list.md): Lists interview questions.
+- [Read question](https://buoyhealth.readme.io/reference/questions_read.md): Retrieves an interview question.
+- [Update question](https://buoyhealth.readme.io/reference/questions_update.md): Updates the answer to a question. When a user updates the answer to a question, the interview resets so that the question sequence following the edit is all new. Thus, if the interview had fifteen questions and a user edits the eighth question, the interview will have eight answered questions and generate a new ninth question. This is done so that the system has the opportunity to change the question sequence to reflect the latest information from the user. If the updated question was asked before the interview complaint mode was changed, complaint mode is reset True.
+- [Explain question](https://buoyhealth.readme.io/reference/questions_explain.md): Returns an object with diagnosis and predictors to help explain why a question was asked. Refer to the [questions explainer](doc:explainer-questions#using-the-explain-endpoint) for more details.
+- [Read result](https://buoyhealth.readme.io/reference/results_read.md): Returns an object describing an interview result. Refer to [the results explainer](doc:explainer-results) for a detailed description of the result endpoint.

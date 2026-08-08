@@ -1,0 +1,88 @@
+generated: '2026-08-08'
+method: searched
+source: >-
+  openapi/buoy-health-symptom-checker-openapi.yml, well-known/buoy-health-openid-configuration.json,
+  https://www.buoyhealth.com/security-and-privacy
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: 'openapi: 3.0.1 published at the ReadMe API registry; 11 paths, 19 operations, 80 component schemas'
+- id: oauth2
+  conforms: true
+  evidence: components.securitySchemes.Bearer is type oauth2 with an authorizationCode flow, applied globally
+- id: oauth2-pkce
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [S256, plain] in the authorization-server metadata'
+  note: '`plain` is advertised alongside S256; S256-only would be the stronger posture'
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: https://auth.buoyhealth.com/.well-known/oauth-authorization-server returns 200 application/json
+- id: oidc-discovery
+  conforms: true
+  evidence: https://auth.buoyhealth.com/.well-known/openid-configuration returns 200 with issuer, jwks_uri and userinfo_endpoint
+- id: rfc7009-token-revocation
+  conforms: true
+  evidence: 'revocation_endpoint: https://auth.buoyhealth.com/oauth/revoke advertised in discovery'
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: 'registration_endpoint: https://auth.buoyhealth.com/oidc/register advertised in discovery'
+- id: rfc8628-device-authorization-grant
+  conforms: true
+  evidence: device_authorization_endpoint advertised and urn:ietf:params:oauth:grant-type:device_code in grant_types_supported
+- id: hitrust-csf
+  conforms: true
+  evidence: >-
+    "Buoy is HITRUST-certified" published on https://www.buoyhealth.com/security-and-privacy, linking to
+    the HITRUST CSF certification press release
+  reference: https://www.prnewswire.com/news-releases/buoy-health-achieves-hitrust-csf-certification-to-further-mitigate-risk-in-third-party-privacy-security-and-compliance-301111543.html
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource returns 404 on both API hosts
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Error bodies are ad hoc — a {"detail": "..."} object on 404, a bare array of strings on 400, and a
+    bare string on 409. No application/problem+json media type appears anywhere in the spec.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every Buoy host
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on every Buoy host
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header documented; no deprecation policy page found
+- id: idempotency-key
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or equivalent parameter in the spec; the three POST operations
+    (interviews_anonymous, complaints_create, intents_create) each create a new resource on retry
+- id: rate-limit-headers
+  conforms: false
+  evidence: No RateLimit-* or X-RateLimit-* response headers declared on any operation; no 429 response documented
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface published; the API is request/response only
+- id: fhir-r4
+  conforms: false
+  evidence: >-
+    Despite being a clinical triage API, no FHIR resource shapes are used — the differential result is a
+    Buoy-proprietary schema, not a FHIR Condition/RiskAssessment
+- id: json-api
+  conforms: false
+  evidence: Responses are plain application/json with a HAL-flavoured _links object, not JSON:API
+- id: hypermedia-links
+  conforms: true
+  evidence: >-
+    LinksProperty (_links) carries absolute `next` / `result` / `interview` URIs that drive the
+    interview state machine — a genuine hypermedia affordance, though not a registered media type
+compliance:
+  published: true
+  page: https://www.buoyhealth.com/security-and-privacy
+  certifications:
+  - HITRUST CSF
+  note: >-
+    HITRUST CSF is the only named certification Buoy publishes. No SOC 2, ISO 27001, PCI DSS or
+    FedRAMP claim was found, and Buoy operates no trust-center portal (trust./security. subdomains do
+    not resolve). HIPAA is implied by the healthcare context but is not asserted as a certification on
+    the public page.

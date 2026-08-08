@@ -1,0 +1,143 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/buoy-health-symptom-checker-openapi.yml
+docs: https://buoyhealth.readme.io/reference/interviews_anonymous
+summary: >-
+  A Django-REST-Framework-shaped, trailing-slash REST API over a stateful conversational triage
+  interview. Every resource is addressed by a UUID token; the interview is a state machine driven by
+  hypermedia _links and an explicit `mode` field. There is no idempotency contract, no pagination, no
+  rate-limit signalling and no request-tracing header.
+authentication:
+  style: oauth2-bearer
+  header: 'Authorization: Bearer <token>'
+  applied: globally to all 19 operations
+  detail: authentication/buoy-health-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    No Idempotency-Key header, parameter or documented retry semantics anywhere in the spec. The three
+    creating operations (interviews_anonymous, complaints_create, intents_create) each mint a new UUID
+    token per call, so a retried POST after a network timeout silently creates a duplicate interview,
+    complaint or intent. PUT operations (interviews_update, complaints_update, intents_update,
+    questions_update) are naturally idempotent by virtue of being full replacements, but this is a
+    property of the verb, not a published contract.
+  safe_retry:
+    idempotent_by_verb: [interviews_update, complaints_update, intents_update, questions_update]
+    unsafe_to_blind_retry: [interviews_anonymous, complaints_create, intents_create]
+pagination:
+  supported: false
+  detail: >-
+    The three collection operations (complaints_list, intents_list, questions_list) take only an
+    `interview` query parameter and return the complete set for that interview. There are no limit,
+    offset, page or cursor parameters and no envelope with next/previous. Collections are bounded by
+    the size of a single triage interview, so this is a reasonable omission rather than a defect.
+  collection_operations: [complaints_list, intents_list, questions_list]
+filtering:
+  supported: partial
+  parameters:
+  - name: interview
+    in: query
+    applies_to: [complaints_list, intents_list, questions_list]
+    required: varies
+    description: UUID token scoping the collection to one interview.
+  - name: text
+    in: query
+    applies_to: [queries_list]
+    required: true
+    description: Free-text prefix for symptom autocomplete.
+  - name: tag
+    in: query
+    applies_to: [queries_list]
+    required: false
+    description: Optional profile tag narrowing autocomplete results.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  detail: No customer-defined metadata field exists on any resource.
+request_tracing:
+  request_id_header: null
+  supported: false
+  detail: >-
+    No X-Request-Id / Request-Id / traceparent header is documented on any request or response, so a
+    client has no correlation handle to quote when contacting support.
+versioning:
+  style: uri-path
+  current: v2
+  base_path: /symptom-checker/v2
+  detail: lifecycle/buoy-health-lifecycle.yml
+url_conventions:
+  trailing_slash: required
+  detail: >-
+    Every path in the spec ends in a trailing slash (/interviews/anonymous/,
+    /questions/{question_token}/explain/). This is Django's APPEND_SLASH convention; clients that
+    normalise it away will be redirected or rejected.
+  identifiers:
+    style: uuid
+    naming: '<resource>_token'
+    examples: [interview_token, complaint_token, intent_token, question_token, result_token]
+    detail: >-
+      Tokens are opaque UUID4s with no type prefix, so an identifier carries no hint of which resource
+      it addresses — passing a complaint token where an intent token is expected yields a bare 404.
+hypermedia:
+  supported: true
+  field: _links
+  schema: LinksProperty
+  detail: >-
+    Interview and question responses carry a `_links` object with absolute `next`, `result` and
+    `interview` URIs that advance the triage state machine. Clients are expected to follow `next`
+    until it is null and then GET `result`. A companion `_msg` string (MsgProperty) carries conditional
+    human-readable guidance such as "No protocol-based questions or results."
+  fields: [next, result, interview]
+  companion_field: _msg
+state_machine:
+  resource: interview
+  mode_field: mode
+  modes: [input, protocol, differential]
+  detail: >-
+    An interview moves between three modes. Adding a complaint while in protocol or differential mode
+    resets it to input. Deleting a complaint resets the interview to input and discards every
+    subsequent answered question. Editing the answer to question N truncates the interview to N
+    questions and regenerates the sequence from there. This mutation-resets-downstream-state behaviour
+    is the single most important convention for an integrator to model.
+error_envelope:
+  format: ad-hoc
+  shapes: [detail-object, string-array, bare-string]
+  problem_json: false
+  detail: errors/buoy-health-problem-types.yml
+rate_limiting:
+  documented: false
+  headers: []
+  status_429_declared: false
+  detail: >-
+    No rate limit is published, no RateLimit-* or X-RateLimit-* response header is declared, and no 429
+    response appears on any operation. A client cannot back off intelligently.
+  artifact: null
+content_negotiation:
+  request: application/json
+  response: application/json
+  media_types_declared: [application/json]
+webhooks:
+  supported: false
+  detail: >-
+    No callbacks, webhooks, events or streaming surface. The triage interview is entirely synchronous
+    request/response, with 202 on interviews_update as the only asynchronous affordance (poll
+    interviews_read until the new question sequence is ready).
+environments:
+- name: sandbox
+  api: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+  issuer: https://auth.sandbox.buoyhealth.com/
+- name: production
+  api: https://api.buoyhealth.com/symptom-checker/v2
+  issuer: https://auth.buoyhealth.com/
+  detail: sandbox/buoy-health-sandbox.yml
+cross_links:
+  authentication: authentication/buoy-health-authentication.yml
+  scopes: scopes/buoy-health-scopes.yml
+  errors: errors/buoy-health-problem-types.yml
+  lifecycle: lifecycle/buoy-health-lifecycle.yml
+  data_model: data-model/buoy-health-data-model.yml
+  sandbox: sandbox/buoy-health-sandbox.yml

@@ -1,0 +1,114 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Buoy Symptom Checker API
+  version: 1.0.0
+x-generated: '2026-08-08'
+x-method: generated
+x-source: openapi/buoy-health-symptom-checker-openapi.yml
+x-note: >-
+  Non-destructive enhancements recorded against the harvested Buoy OpenAPI 3.0.1. The original at
+  openapi/_original/buoy-health-openapi.json is never mutated. Every action below annotates something
+  observed in the spec or probed live — no operation, schema, or behaviour is invented.
+extends: openapi/buoy-health-symptom-checker-openapi.yml
+actions:
+- target: $.info
+  description: Provenance and profile linkage.
+  update:
+    x-apievangelist-profile: https://apievangelist.com/providers/buoy-health
+    x-apievangelist-harvested: '2026-08-08'
+    x-apievangelist-source: https://dash.readme.com/api/v1/api-registry/9blypy14ktiobwma
+    x-apievangelist-docs: https://buoyhealth.readme.io/reference/interviews_anonymous
+- target: $.info
+  description: >-
+    Record the tags actually used by operations. The spec tags all 19 operations but declares no
+    top-level tags[] array, so no consumer gets tag descriptions.
+  update:
+    x-apievangelist-tags-used: [Interviews, Complaints, Queries, Intents, Questions, Results]
+    x-apievangelist-tags-declared: 0
+- target: $.servers
+  description: Label the environments, which the spec leaves unnamed and lists sandbox-first.
+  update:
+    x-apievangelist-environments:
+      sandbox:
+        url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+        issuer: https://auth.sandbox.buoyhealth.com/
+      production:
+        url: https://api.buoyhealth.com/symptom-checker/v2
+        issuer: https://auth.buoyhealth.com/
+    x-apievangelist-default-server: sandbox
+- target: $.components.securitySchemes.Bearer
+  description: >-
+    The declared oauth2 flow hardcodes the SANDBOX issuer while the servers list includes production.
+    Record the production issuer discovered via anonymous RFC 8414 metadata so a generated client can
+    reach it.
+  update:
+    x-apievangelist-production-issuer: https://auth.buoyhealth.com/
+    x-apievangelist-production-authorization-url: https://auth.buoyhealth.com/authorize
+    x-apievangelist-production-token-url: https://auth.buoyhealth.com/oauth/token
+    x-apievangelist-discovery: https://auth.buoyhealth.com/.well-known/openid-configuration
+    x-apievangelist-pkce: [S256, plain]
+    x-apievangelist-scope-model: flat
+    x-apievangelist-note: >-
+      The scopes map is empty and no operation names a scope, so a valid token grants the entire
+      19-operation surface.
+- target: $.paths['/results/{result_token}/'].get
+  description: Flag the safety-critical output so agent tooling escalates rather than paraphrases.
+  update:
+    x-agentic-access:
+      action-class: connected
+      consequence: safety-critical
+      human-in-the-loop: required
+      audit: required
+    x-apievangelist-note: >-
+      Returns the emergency `alarm` flag and the ranked differential. An agent must surface an alarm
+      result verbatim and must not summarise away a differential.
+- target: $.paths['/questions/{question_token}/'].put
+  description: Record the destructive downstream side effect of editing an answer.
+  update:
+    x-apievangelist-side-effect: >-
+      Truncates the interview at this question and regenerates every subsequent question, invalidating
+      previously read question tokens.
+    x-agentic-access:
+      action-class: acting
+      consequence: write
+      audit: required
+- target: $.paths['/complaints/{complaint_token}/'].delete
+  description: Record the cascade.
+  update:
+    x-apievangelist-side-effect: >-
+      Resets the interview to `input` mode and discards every complaint and answered question that
+      followed this one.
+- target: $.paths['/interviews/anonymous/'].post
+  description: Mark the de-identification boundary and the absent idempotency contract.
+  update:
+    x-apievangelist-deidentified: true
+    x-apievangelist-idempotent: false
+    x-apievangelist-note: >-
+      No Idempotency-Key is supported; a retried POST after a timeout mints a second interview.
+- target: $.paths
+  description: Record the cross-cutting gaps found against the whole surface.
+  update:
+    x-apievangelist-gaps:
+      idempotency: none
+      pagination: none
+      rate_limit_headers: none
+      status_429: not-declared
+      status_5xx: not-declared
+      problem_json: false
+      error_responses_without_schema_or_description: 40
+      webhooks: none
+      sunset_header: false
+- target: $.components
+  description: Cross-link the derived artifacts in this repository.
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/buoy-health-authentication.yml
+      scopes: scopes/buoy-health-scopes.yml
+      conventions: conventions/buoy-health-conventions.yml
+      errors: errors/buoy-health-problem-types.yml
+      data-model: data-model/buoy-health-data-model.yml
+      lifecycle: lifecycle/buoy-health-lifecycle.yml
+      conformance: conformance/buoy-health-conformance.yml
+      sandbox: sandbox/buoy-health-sandbox.yml
+      mcp: mcp/buoy-health-mcp.yml
+      skills: skills/_index.yml

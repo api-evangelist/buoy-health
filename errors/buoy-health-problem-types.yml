@@ -1,0 +1,146 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/buoy-health-symptom-checker-openapi.yml
+format: ad-hoc
+format_note: >-
+  Buoy does NOT use RFC 9457 problem details. There is no application/problem+json media type and no
+  shared error schema in components. Three different error envelope shapes appear across the surface,
+  and 38 of the 45 declared error responses carry no schema and no description at all — the client
+  learns only the status code.
+envelopes:
+- shape: detail-object
+  media_type: application/json
+  schema: '{"type": "object", "additionalProperties": {}}'
+  example: '{"detail": "Not found."}'
+  seen_on: [404]
+  note: Django REST Framework's default error body.
+- shape: string-array
+  media_type: application/json
+  schema: '{"type": "array", "items": {"type": "string"}}'
+  example: '["Must provide query parameter ''text''"]'
+  seen_on: [400]
+  note: Field-validation failures returned as a bare JSON array of messages.
+- shape: bare-string
+  media_type: application/json
+  example: '"Interview has an unanswered question."'
+  seen_on: [409]
+- shape: empty
+  media_type: application/json
+  example: null
+  seen_on: [400, 401, 404]
+  note: The dominant case — response declared with neither schema nor description.
+problems:
+- status: 400
+  title: Bad request
+  meaning: >-
+    A required query parameter or request-body field is missing or invalid. Returned as an array of
+    human-readable validation messages.
+  envelope: string-array
+  documented_example: '["Must provide query parameter ''text''"]'
+  source_operations:
+  - openapi/buoy-health-symptom-checker-openapi.yml#queries_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_create
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_anonymous
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_create
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_update
+  remediation: >-
+    Validate against the request schema before sending; for queries_list the `text` query parameter is
+    required, and for complaints_create the `interview` token must reference a live interview.
+- status: 401
+  title: Unauthorized
+  meaning: The OAuth 2.0 bearer token is missing, malformed, expired, or issued by the wrong environment's issuer.
+  envelope: empty
+  documented_example: null
+  applies_to: all 19 operations
+  source_operations:
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_anonymous
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_create
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_delete
+  - openapi/buoy-health-symptom-checker-openapi.yml#queries_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_create
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_delete
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_explain
+  - openapi/buoy-health-symptom-checker-openapi.yml#results_read
+  remediation: >-
+    Re-fetch a token from the issuer that matches the API host you are calling — the spec's oauth2 flow
+    points at the SANDBOX issuer while listing both sandbox and production servers, which is the most
+    likely cause of a 401 against api.buoyhealth.com.
+- status: 404
+  title: Not found
+  meaning: >-
+    The referenced token (interview, complaint, intent, question or result) does not exist, has expired,
+    or belongs to another client.
+  envelope: detail-object
+  documented_example: '{"detail": "Not found."}'
+  source_operations:
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#complaints_delete
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#intents_delete
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_list
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_read
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_update
+  - openapi/buoy-health-symptom-checker-openapi.yml#questions_explain
+  - openapi/buoy-health-symptom-checker-openapi.yml#results_read
+  remediation: Re-read the parent interview and follow its `_links` rather than caching tokens across sessions.
+- status: 409
+  title: Interview not in an updatable state
+  meaning: >-
+    interviews_update was called while the interview cannot transition — it is already complete, has no
+    chief complaint yet, or has an unanswered question outstanding.
+  envelope: bare-string
+  documented_example: '"Interview has an unanswered question."'
+  source_operations:
+  - openapi/buoy-health-symptom-checker-openapi.yml#interviews_update
+  remediation: >-
+    Drain the question queue (questions_list / questions_update) and confirm at least one complaint
+    exists before switching the interview mode to protocol or differential.
+non_error_statuses_worth_handling:
+- status: 202
+  operation: interviews_update
+  meaning: The mode change was accepted but the new question sequence is still being generated; poll interviews_read.
+- status: 204
+  operation: results_read
+  meaning: >-
+    The interview produced no differential — an empty result, not an error. Pair with the
+    `undiagnosed` flag on ReadResultsSchema.
+- status: 204
+  operation: complaints_create
+  meaning: >-
+    The complaint was accepted but the AI returned no interpretations for the free-text query; the docs
+    instruct the client to prompt the user for a new query rather than treat this as a failure.
+coverage:
+  operations_total: 19
+  error_responses_declared: 45
+  with_schema: 5
+  with_description: 5
+  without_schema_or_description: 40
+  statuses_used: [400, 401, 404, 409]
+  status_500_declared: 0
+gaps:
+- id: no-error-codes
+  detail: >-
+    Buoy publishes no stable machine-readable error code or error `type` URI — clients must branch on
+    HTTP status plus free-text English, which breaks localisation and defeats programmatic handling.
+- id: inconsistent-envelopes
+  detail: >-
+    Three envelope shapes (object, array, bare string) across four statuses. A single error schema in
+    components.schemas would let generated clients deserialize errors at all.
+- id: no-5xx
+  detail: No 5xx response is declared on any operation, so generated clients have no server-error contract.
