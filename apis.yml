@@ -29,56 +29,13 @@ tags:
 - telehealth
 - oauth2
 apis:
-- name: Buoy Symptom Checker API
-  description: >-
-    REST API for Buoy's AI symptom-checking and triage engine. Create an anonymous (de-identified)
-    interview from age and sex, submit a chief complaint and clarify the AI's interpretations, walk the
-    adaptively generated question sequence, capture user intents, and read the interview result — a
-    differential diagnosis with an alarm flag and a recommended level of care. Hypermedia `_links`
-    navigate the interview to the next question or the result. OpenAPI 3.0.1, 19 operations across six
-    tags, 80 component schemas, secured with an OAuth 2.0 authorization-code flow.
-  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
-  baseURL: https://api.buoyhealth.com/symptom-checker/v2
-  tags:
-  - symptom-checker
-  - medical-triage
-  - digital-health
-  - healthcare
-  - clinical-ai
-  - care-navigation
-  - diagnosis
-  properties:
-  - type: OpenAPI
-    url: openapi/buoy-health-symptom-checker-openapi.yml
-  - type: Documentation
-    url: https://buoyhealth.readme.io/reference/interviews_anonymous
-  - type: APIReference
-    url: https://buoyhealth.readme.io/reference
-  - type: Postman
-    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
-  - type: Authentication
-    url: authentication/buoy-health-authentication.yml
-  - type: OAuthScopes
-    url: scopes/buoy-health-scopes.yml
-  - type: Conventions
-    url: conventions/buoy-health-conventions.yml
-  - type: ErrorCatalog
-    url: errors/buoy-health-problem-types.yml
-  - type: DataModel
-    url: data-model/buoy-health-data-model.yml
-  - type: Overlay
-    url: overlays/buoy-health-symptom-checker-overlay.yaml
-  - type: Sandbox
-    url: sandbox/buoy-health-sandbox.yml
-  - type: TermsOfService
-    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
 - name: Buoy Authorization Server
   description: >-
     Auth0-backed OAuth 2.0 / OpenID Connect authorization server that issues the bearer tokens the Buoy
     Symptom Checker API requires. Publishes anonymous RFC 8414 authorization-server metadata and OIDC
     discovery at /.well-known/, with authorization-code (PKCE S256), client-credentials, device-code,
-    refresh-token and password grants, a JWKS endpoint, dynamic client registration and token
-    revocation. Separate sandbox issuer at auth.sandbox.buoyhealth.com.
+    refresh-token and password grants, a JWKS endpoint, dynamic client registration and token revocation.
+    Separate sandbox issuer at auth.sandbox.buoyhealth.com.
   humanURL: https://www.buoyhealth.com/developers
   baseURL: https://auth.buoyhealth.com/
   tags:
@@ -96,6 +53,186 @@ apis:
     url: authentication/buoy-health-authentication.yml
   - type: OAuthScopes
     url: scopes/buoy-health-scopes.yml
+- aid: buoy-health:buoy-health-complaints-api
+  name: Buoy Health Complaints API
+  description: The Complaints API from Buoy Health — 2 operation(s) for complaints.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Complaints
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-complaints-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- aid: buoy-health:buoy-health-intents-api
+  name: Buoy Health Intents API
+  description: The Intents API from Buoy Health — 2 operation(s) for intents.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Intents
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-intents-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- aid: buoy-health:buoy-health-interviews-api
+  name: Buoy Health Interviews API
+  description: The Interviews API from Buoy Health — 2 operation(s) for interviews.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Interviews
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-interviews-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- aid: buoy-health:buoy-health-queries-api
+  name: Buoy Health Queries API
+  description: The Queries API from Buoy Health — 1 operation(s) for queries.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Queries
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-queries-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- aid: buoy-health:buoy-health-questions-api
+  name: Buoy Health Questions API
+  description: The Questions API from Buoy Health — 3 operation(s) for questions.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Questions
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-questions-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+- aid: buoy-health:buoy-health-results-api
+  name: Buoy Health Results API
+  description: The Results API from Buoy Health — 1 operation(s) for results.
+  humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
+  baseURL: https://api.buoyhealth.com/symptom-checker/v2
+  tags:
+  - Results
+  properties:
+  - type: OpenAPI
+    url: openapi/buoy-health-results-api-openapi.yml
+  - type: Documentation
+    url: https://buoyhealth.readme.io/reference/interviews_anonymous
+  - type: APIReference
+    url: https://buoyhealth.readme.io/reference
+  - type: Postman
+    url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
+  - type: Authentication
+    url: authentication/buoy-health-authentication.yml
+  - type: OAuthScopes
+    url: scopes/buoy-health-scopes.yml
+  - type: Conventions
+    url: conventions/buoy-health-conventions.yml
+  - type: ErrorCatalog
+    url: errors/buoy-health-problem-types.yml
+  - type: DataModel
+    url: data-model/buoy-health-data-model.yml
+  - type: Sandbox
+    url: sandbox/buoy-health-sandbox.yml
+  - type: TermsOfService
+    url: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
 common:
 - type: Website
   url: https://www.buoyhealth.com/
@@ -116,7 +253,7 @@ common:
 - type: Postman
   url: https://www.postman.com/buoy-health-api/buoy-symptom-checker-api/overview
 - type: OpenAPI
-  url: openapi/buoy-health-symptom-checker-openapi.yml
+  url: openapi/_original/buoy-health-symptom-checker-openapi.yml
 - type: LLMsTxt
   url: llms/buoy-health-llms.txt
 - type: WellKnown
