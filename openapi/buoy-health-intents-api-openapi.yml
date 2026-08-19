@@ -1,0 +1,337 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Intents API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Intents
+paths:
+  /intents/:
+    get:
+      tags:
+      - Intents
+      summary: List intents
+      description: Returns a list of intents associated with an interview.
+      operationId: intents_list
+      parameters:
+      - name: interview
+        in: query
+        description: A UUID-formatted token uniquely identifying an interview instance.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListIntentSchema'
+        '401':
+          $ref: '#/components/responses/401Response'
+    post:
+      tags:
+      - Intents
+      summary: Create intent
+      description: 'Creates a new intent.
+
+
+        Intents gathered at the start of an interview (or after entering complaints) should be submitted with the "INTERVIEW_START" event. Intents gathered at the end of an interview should be submitted with the "INTERVIEW_RESULT" event. An empty string ("") should always be submitted in the detail parameter.'
+      operationId: intents_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIntentSchema'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentSchema'
+              examples:
+                INTERVIEW_START:
+                  $ref: '#/components/examples/IntentInterviewStartResponse'
+                INTERVIEW_RESULT:
+                  $ref: '#/components/examples/IntentInterviewResultResponse'
+        '400':
+          $ref: '#/components/responses/400Intent'
+        '401':
+          $ref: '#/components/responses/401Response'
+      x-codegen-request-body-name: data
+  /intents/{intent_token}/:
+    get:
+      tags:
+      - Intents
+      summary: Read intent
+      description: Returns an object describing the current state of an intent.
+      operationId: intents_read
+      parameters:
+      - name: intent_token
+        in: path
+        description: A UUID-formatted token uniquely identifying an intent.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentSchema'
+              examples:
+                INTERVIEW_START:
+                  $ref: '#/components/examples/IntentInterviewStartResponse'
+                INTERVIEW_RESULT:
+                  $ref: '#/components/examples/IntentInterviewResultResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+    put:
+      tags:
+      - Intents
+      summary: Update intent
+      description: Updates an intent.
+      operationId: intents_update
+      parameters:
+      - name: intent_token
+        in: path
+        description: A UUID-formatted token uniquely identifying an intent.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIntentSchema'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentSchema'
+              examples:
+                INTERVIEW_START:
+                  $ref: '#/components/examples/IntentInterviewStartResponse'
+                INTERVIEW_RESULT:
+                  $ref: '#/components/examples/IntentInterviewResultResponse'
+        '400':
+          $ref: '#/components/responses/400Intent'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+      x-codegen-request-body-name: data
+    delete:
+      tags:
+      - Intents
+      summary: Delete intent
+      description: Deletes an intent.
+      operationId: intents_delete
+      parameters:
+      - name: intent_token
+        in: path
+        description: A UUID-formatted token uniquely identifying an intent.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '204':
+          description: No Content
+          content: {}
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+components:
+  schemas:
+    IntentDecisionProperty:
+      title: decision
+      description: A string clarifying the type of care a user intends to seek.
+      type: string
+      enum:
+      - NO_CARE
+      - SOMETHING_ELSE
+      - UNSURE
+      - WAIT_OR_SELF_TREAT
+      - TELEMEDICINE
+      - PRIMARY
+      - SPECIALIST
+      - URGENT
+      - EMERGENCY
+    IntentEventProperty:
+      title: event
+      description: A string indicating whether an intent was captured at the start of an interview ("INTERVIEW_START") or after results have been shown ("INTERVIEW_RESULT").
+      type: string
+      enum:
+      - INTERVIEW_START
+      - INTERVIEW_RESULT
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    CreateIntentSchema:
+      required:
+      - decision
+      - detail
+      - event
+      - interview
+      type: object
+      properties:
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        event:
+          $ref: '#/components/schemas/IntentEventProperty'
+        decision:
+          $ref: '#/components/schemas/IntentDecisionProperty'
+    ListIntentSchema:
+      required:
+      - decision
+      - event
+      - interview
+      type: array
+      items:
+        type: object
+        properties:
+          token:
+            title: token
+            description: A UUID-formatted token uniquely identifying an intent.
+            type: string
+            format: uuid
+            readOnly: true
+          interview:
+            $ref: '#/components/schemas/InterviewTokenProperty'
+          event:
+            $ref: '#/components/schemas/IntentEventProperty'
+          decision:
+            $ref: '#/components/schemas/IntentDecisionProperty'
+    IntentSchema:
+      required:
+      - decision
+      - event
+      - interview
+      type: object
+      properties:
+        token:
+          title: token
+          description: A UUID-formatted token uniquely identifying an intent.
+          type: string
+          format: uuid
+          readOnly: true
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        event:
+          $ref: '#/components/schemas/IntentEventProperty'
+        decision:
+          $ref: '#/components/schemas/IntentDecisionProperty'
+  responses:
+    400Intent:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+            properties:
+              non_field_errors:
+                type:
+                - string
+                - 'null'
+                description: A string returning details about a bad request not related to a specific field in the request body.
+              interview:
+                type:
+                - string
+                - 'null'
+                description: A string returning details about a bad request related to the submitted interview token.
+              event:
+                type:
+                - string
+                - 'null'
+                description: A string returning details about a bad request related to the submitted event.
+              decision:
+                type:
+                - string
+                - 'null'
+                description: A string returning details about a bad request related to the submitted decision.
+          examples:
+            No results:
+              value:
+                non_field_errors:
+                - Interview has no results.
+            Invalid interview token:
+              value:
+                interview: Object with token=<invalid_token> does not exist.
+            Invalid event:
+              value:
+                event:
+                - <invalid_event> is not a valid choice.
+            Invalid decision:
+              value:
+                decision:
+                - <invalid_decision> is not a valid choice.
+    404NotFoundHTML:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: string
+          examples:
+            Not found:
+              value: '<h1>Not Found</h1>
+
+                <p>The requested resource was not found on this server.</p>'
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+  examples:
+    IntentInterviewResultResponse:
+      value:
+        token: 52d2af5e-5849-401d-bd71-20373513db16
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        event: INTERVIEW_RESULT
+        decision: PRIMARY
+    IntentInterviewStartResponse:
+      value:
+        token: 76c8af5e-5849-401d-bd71-60773913df10
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        event: INTERVIEW_START
+        decision: EMERGENCY
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

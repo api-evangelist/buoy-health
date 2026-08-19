@@ -1,0 +1,953 @@
+{
+  "item": [
+    {
+      "id": "2ed6499e-3711-49c6-8291-387447b22dbb",
+      "name": "Questions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55233ead-cb08-4c8b-8a3b-8cd9a7bc1f0f",
+          "name": "List questions",
+          "request": {
+            "name": "List questions",
+            "description": {
+              "content": "Lists interview questions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "questions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interview",
+                  "value": "<string>",
+                  "description": "(Required) A valid interview token"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e382c74e-8fd6-4050-bf49-6db0e19313c3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"token\": \"60fe635d-5d70-4e5f-9702-2be36c66ff91\",\n    \"text\": \"Is your hip pain getting better or worse?\",\n    \"choice\": \"S\",\n    \"media\": \"\",\n    \"options\": [\n      {\n        \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n        \"text\": \"Getting better\",\n        \"media\": \"\",\n        \"exclusive\": true,\n        \"media_alttext\": \"\",\n        \"free_text\": false\n      },\n      {\n        \"token\": \"296f9630-a45b-4b28-809a-676664f95ca1\",\n        \"text\": \"Staying the same\",\n        \"media\": \"\",\n        \"exclusive\": true,\n        \"media_alttext\": \"\",\n        \"free_text\": false\n      },\n      {\n        \"token\": \"ce6a57b3-85f6-4db0-8156-a8653ef21ad3\",\n        \"text\": \"Getting worse\",\n        \"media\": \"\",\n        \"exclusive\": true,\n        \"media_alttext\": \"\",\n        \"free_text\": false\n      }\n    ],\n    \"answer\": [\n      {\n        \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n        \"extra\": \"\"\n      }\n    ],\n    \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n    \"media_alttext\": \"\"\n  },\n  {\n    \"token\": \"42effc1c-d938-4e4c-ab8e-51d9d5ec4488\",\n    \"text\": \"Is your hip pain constant or come-and-go?\",\n    \"media\": \"\",\n    \"options\": [\n      {\n        \"token\": \"2f9b34ca-3b60-4af3-936c-178dc79b3722\\\"\",\n        \"text\": \"constant\",\n        \"media\": null,\n        \"exclusive\": true,\n        \"media_alttext\": \"\",\n        \"free_text\": false\n      },\n      {\n        \"token\": \"b6df264a-34e0-4974-b6d3-874c79b10632\",\n        \"text\": \"Come-and-go\",\n        \"media\": \"\",\n        \"exclusive\": true,\n        \"media_alttext\": \"\",\n        \"free_text\": false\n      }\n    ],\n    \"answer\": [],\n    \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n    \"media_alttext\": \"\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5c3e10b-8e36-4a07-9a66-b0fed76ea9b4",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8774bd89-fbec-4606-b99d-b8e63de05cde",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "22fc86c4-8a3a-498b-8e6a-f50991116a3a",
+          "name": "Read question",
+          "request": {
+            "name": "Read question",
+            "description": {
+              "content": "Retrieves an interview question.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "questions",
+                ":question_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "question_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9487ab67-ee19-489f-a81d-c3cb8e11e805",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"60fe635d-5d70-4e5f-9702-2be36c66ff91\",\n  \"text\": \"Is your hip pain getting better or worse?\",\n  \"choice\": \"S\",\n  \"media\": \"\",\n  \"options\": [\n    {\n      \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n      \"text\": \"Getting better\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    },\n    {\n      \"token\": \"296f9630-a45b-4b28-809a-676664f95ca1\",\n      \"text\": \"Staying the same\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    },\n    {\n      \"token\": \"ce6a57b3-85f6-4db0-8156-a8653ef21ad3\",\n      \"text\": \"Getting worse\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    }\n  ],\n  \"answer\": [\n    {\n      \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n      \"extra\": \"\"\n    }\n  ],\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"media_alttext\": \"\",\n  \"_links\": [\n    {\n      \"next\": \"https://sandbox.buoyhealth.com/api/questions/0f9b45c7-3004-4250-94ad-7d34004056d9/\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb2dc0c2-bf1f-4444-9deb-c73ad369567b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee94e8ab-e264-4e86-b3d6-1267703b68fe",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"<h1>Not Found</h1>\\n<p>The requested resource was not found on this server.</p>\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a450c0c-992e-4762-98d0-e5646c937c5e",
+          "name": "Update question",
+          "request": {
+            "name": "Update question",
+            "description": {
+              "content": "Updates the answer to a question. When a user updates the answer to a question, the interview resets so that the question sequence following the edit is all new. Thus, if the interview had fifteen questions and a user edits the eighth question, the interview will have eight answered questions and generate a new ninth question. This is done so that the system has the opportunity to change the question sequence to reflect the latest information from the user. If the updated question was asked before the interview complaint mode was changed, complaint mode is reset True.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "questions",
+                ":question_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "question_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answer\": [\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    },\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "31fa4848-32d4-4ef4-8b8a-083a9f420b63",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answer\": [\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    },\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"60fe635d-5d70-4e5f-9702-2be36c66ff91\",\n  \"text\": \"Is your hip pain getting better or worse?\",\n  \"choice\": \"S\",\n  \"media\": \"\",\n  \"options\": [\n    {\n      \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n      \"text\": \"Getting better\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    },\n    {\n      \"token\": \"296f9630-a45b-4b28-809a-676664f95ca1\",\n      \"text\": \"Staying the same\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    },\n    {\n      \"token\": \"ce6a57b3-85f6-4db0-8156-a8653ef21ad3\",\n      \"text\": \"Getting worse\",\n      \"media\": \"\",\n      \"exclusive\": true,\n      \"media_alttext\": \"\",\n      \"free_text\": false\n    }\n  ],\n  \"answer\": [\n    {\n      \"token\": \"97075008-f2d6-491f-866e-fda9fde8da89\",\n      \"extra\": \"\"\n    }\n  ],\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"media_alttext\": \"\",\n  \"_links\": [\n    {\n      \"next\": \"https://sandbox.buoyhealth.com/api/questions/0f9b45c7-3004-4250-94ad-7d34004056d9/\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b1569c0-ef7b-451d-984a-4b6439f73ec1",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answer\": [\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    },\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"non_field_errors\": [\n    \"Invalid answer token(s). Choose from options.\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12e512ce-aee6-4fd5-bbea-cf6d6776c84d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answer\": [\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    },\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "deb1fe5b-ffb4-4ff0-b0ea-1897f4bdf5f5",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answer\": [\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    },\n    {\n      \"token\": \"<uuid>\",\n      \"extra\": \"<string,null>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"<h1>Not Found</h1>\\n<p>The requested resource was not found on this server.</p>\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a003e93-95e2-4e59-b270-547397fdd227",
+          "name": "Explain question",
+          "request": {
+            "name": "Explain question",
+            "description": {
+              "content": "Returns an object with diagnosis and predictors to help explain why a question was asked. Refer to the [questions explainer](doc:explainer-questions#using-the-explain-endpoint) for more details.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "questions",
+                ":question_token",
+                "explain",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "question_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f01017aa-f105-477e-8438-6cfb578cb357",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    "explain",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"e177ab02-046e-49bd-ac9c-11431c4f2ba4\",\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"diagnosis\": \"hip strain\",\n  \"predictors\": [\n    \"hip pain\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa90b2ae-0fed-4953-966e-78d6a8e838fa",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    "explain",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00eb8ea1-ba45-42d1-9524-a4d2df24c3f8",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":question_token",
+                    "explain",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "question_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a question."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"<h1>Not Found</h1>\\n<p>The requested resource was not found on this server.</p>\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.sandbox.buoyhealth.com/symptom-checker/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "20d6537a-c1ec-48fd-a62f-d8c3f46f9c29",
+    "name": "Buoy Symptom Checker Questions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Contact Support:\n Email: alex.nixon@buoyhealth.com",
+      "type": "text/plain"
+    }
+  }
+}

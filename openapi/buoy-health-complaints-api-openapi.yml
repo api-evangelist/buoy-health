@@ -1,0 +1,395 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Complaints API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Complaints
+paths:
+  /complaints/:
+    get:
+      tags:
+      - Complaints
+      summary: List complaints
+      description: Returns a list of complaints associated with an interview.
+      operationId: complaints_list
+      parameters:
+      - name: interview
+        in: query
+        description: A UUID-formatted token uniquely identifying an interview instance.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadComplaintSchema'
+              examples:
+                List Complaints:
+                  $ref: '#/components/examples/ComplaintListResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+    post:
+      tags:
+      - Complaints
+      summary: Create complaint
+      description: 'Adds a chief complaint to an interview.
+
+
+        The client should not expect that an interpretation will be returned for all user-generated complaints. The AI will do its best to interpret the query, but it is not guaranteed to succeed in finding appropriate interpretation matches.
+
+
+        In instances where no interpretations are returned, the user should be asked to submit a new query. If a complaint is accepted while the interview is in the "protocol" or "differential" mode, the interview will be reset to the "input" mode.'
+      operationId: complaints_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateComplaintSchema'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadComplaintSchema'
+              examples:
+                Create Complaint:
+                  $ref: '#/components/examples/ComplaintCreateResponse'
+        '204':
+          description: No content. The system could not interpret the query.
+          content: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Invalid Interview:
+                  value: '[Invalid ''interview'']'
+        '401':
+          $ref: '#/components/responses/401Response'
+      x-codegen-request-body-name: data
+  /complaints/{complaint_token}/:
+    get:
+      tags:
+      - Complaints
+      summary: Read complaint
+      description: Returns an object describing the current state of a complaint.
+      operationId: complaints_read
+      parameters:
+      - name: complaint_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a complaint.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadComplaintSchema'
+              examples:
+                Read Complaint:
+                  $ref: '#/components/examples/ComplaintWithClarificationResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+    put:
+      tags:
+      - Complaints
+      summary: Update complaint
+      description: Updates a complaint with a clarification chosen from an AI generated list of interpretations.
+      operationId: complaints_update
+      parameters:
+      - name: complaint_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a complaint.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateComplaintSchema'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadComplaintSchema'
+              examples:
+                Update Complaint:
+                  $ref: '#/components/examples/ComplaintWithClarificationResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      x-codegen-request-body-name: data
+    delete:
+      tags:
+      - Complaints
+      summary: Delete complaint
+      description: 'Deletes a complaint.
+
+
+        Deleting a complaint will automatically reset the interview to the "input" mode and removes any complaints or questions answered that previously followed the complaint.'
+      operationId: complaints_delete
+      parameters:
+      - name: complaint_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a complaint.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '204':
+          description: No Content
+          content: {}
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+components:
+  schemas:
+    ReadInterpretationSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          description: A UUID-formatted token uniquely identifying a machine-generated interpretation of a user's complaint.
+          format: uuid
+        title:
+          title: title
+          minLength: 1
+          type: string
+          description: Title of a given machine-generated interpretation of a user's complaint.
+        description:
+          title: description
+          minLength: 1
+          type: string
+          description: Description of a given machine-generated interpretation of a user's complaint.
+    ReadClarificationSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    CreateComplaintSchema:
+      required:
+      - interview
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/ComplaintQueryProperty'
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    ClarificationTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
+    ComplaintQueryProperty:
+      title: query
+      minLength: 1
+      type: string
+      description: The user's description of their complaint.
+    SetClarificationSchema:
+      title: clarification
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    ReadComplaintSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          description: A UUID-formatted token uniquely identifying a user's complaint.
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        query:
+          $ref: '#/components/schemas/ComplaintQueryProperty'
+        interpretations:
+          type: array
+          description: An object representing a machine-generated interpretation of a user's complaint.
+          items:
+            $ref: '#/components/schemas/ReadInterpretationSchema'
+        clarification:
+          type: array
+          description: An object representing the user's selected machine-generated interpretation of their complaint.
+          items:
+            $ref: '#/components/schemas/ReadClarificationSchema'
+        _links:
+          title: _links
+          type:
+          - object
+          - 'null'
+          description: Conditional links that point to questions required to clarify a complaint.
+          properties:
+            next:
+              type: string
+              description: Absolute URI for next the question in an interview.
+              example: null
+            result:
+              type: string
+              format: uri
+              description: Absolute URI for the result of an interview.
+    UpdateComplaintSchema:
+      required:
+      - clarification
+      - interview
+      type: object
+      properties:
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        clarification:
+          $ref: '#/components/schemas/SetClarificationSchema'
+  examples:
+    ComplaintWithClarificationResponse:
+      value:
+        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+        _links:
+          next: https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/
+    ComplaintCreateResponse:
+      value:
+        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification: []
+    ComplaintListResponse:
+      value:
+      - token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360.
+      - token: 7d4eabe2-e5f2-42b5-8f7e-a33e140a4dbc
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: hip pain
+        interpretations:
+        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+          title: hip pain
+          description: I have hip pain
+        - token: ed9895d8-fdd3-4a17-a9a6-14fcd01ccb69
+          title: deep, throbbing hip pain
+          description: The hip pain is deep and throbbing
+        - token: 96bd510d-1fea-4420-9717-66b7074800ff
+          title: dull, achy hip pain
+          description: The hip pain is dull and achy
+        clarification:
+        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+  responses:
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Interviews API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Interviews",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create anonymous interview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/interviews/anonymous/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new anonymous interview.\n\nThis endpoint uses basic demographic information (age and sex at minimum) to create a de-identified interview. It does not require an authenticated user or store user information with a specific profile in Buoy."
+        },
+        {
+          "info": {
+            "name": "Read interview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/interviews/:interview_token/",
+            "params": [
+              {
+                "name": "interview_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying an interview instance."
+              }
+            ]
+          },
+          "docs": "Describes an interview instance."
+        },
+        {
+          "info": {
+            "name": "Update interview",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/interviews/:interview_token/",
+            "params": [
+              {
+                "name": "interview_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying an interview instance."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the interview operation mode one of the three modes: input, protocol, or differential.\n\nFor more information on the differences of the interview modes, please refer to the [Interviews explainer page.](doc:explainer-interviews)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

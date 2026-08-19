@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Queries API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Queries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List queries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/queries/",
+            "params": [
+              {
+                "name": "text",
+                "value": "",
+                "type": "query",
+                "description": "User complaint search text."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "A label to include in the response. When provided, the server will return the response to the request with the optional 'tag' parameter included. This is to help clients order responses correctly when network latency is greater than the time between requests (e.g., when requests are sent with each character typed). A monotonically increasing integer value works best."
+              }
+            ]
+          },
+          "docs": "Retrieves autocomplete text for user queries."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

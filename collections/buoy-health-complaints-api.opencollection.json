@@ -1,0 +1,125 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Complaints API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Complaints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List complaints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/complaints/",
+            "params": [
+              {
+                "name": "interview",
+                "value": "",
+                "type": "query",
+                "description": "A UUID-formatted token uniquely identifying an interview instance."
+              }
+            ]
+          },
+          "docs": "Returns a list of complaints associated with an interview."
+        },
+        {
+          "info": {
+            "name": "Create complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/complaints/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a chief complaint to an interview.\n\nThe client should not expect that an interpretation will be returned for all user-generated complaints. The AI will do its best to interpret the query, but it is not guaranteed to succeed in finding appropriate interpretation matches.\n\nIn instances where no interpretations are returned, the user should be asked to submit a new query. If a complaint is accepted while the interview is in the \"protocol\" or \"differential\" mode, the interview will be reset to "
+        },
+        {
+          "info": {
+            "name": "Read complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/complaints/:complaint_token/",
+            "params": [
+              {
+                "name": "complaint_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a complaint."
+              }
+            ]
+          },
+          "docs": "Returns an object describing the current state of a complaint."
+        },
+        {
+          "info": {
+            "name": "Update complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/complaints/:complaint_token/",
+            "params": [
+              {
+                "name": "complaint_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a complaint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a complaint with a clarification chosen from an AI generated list of interpretations."
+        },
+        {
+          "info": {
+            "name": "Delete complaint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/complaints/:complaint_token/",
+            "params": [
+              {
+                "name": "complaint_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a complaint."
+              }
+            ]
+          },
+          "docs": "Deletes a complaint.\n\nDeleting a complaint will automatically reset the interview to the \"input\" mode and removes any complaints or questions answered that previously followed the complaint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

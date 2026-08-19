@@ -2,11 +2,10 @@ generated: '2026-08-08'
 method: derived
 status: candidate
 source: openapi/buoy-health-symptom-checker-openapi.yml
-summary: >-
-  Buoy publishes NO MCP server. This is an API-Evangelist-derived CANDIDATE tool surface, mapped one
-  tool per real OpenAPI operationId so an integrator can stand one up without guessing. Each tool's
-  real input contract is the parameters + requestBody of its backing operation in the spec. Nothing
-  here is served by Buoy.
+summary: Buoy publishes NO MCP server. This is an API-Evangelist-derived CANDIDATE tool surface, mapped
+  one tool per real OpenAPI operationId so an integrator can stand one up without guessing. Each tool's
+  real input contract is the parameters + requestBody of its backing operation in the spec. Nothing here
+  is served by Buoy.
 searched:
 - target: https://mcp.buoyhealth.com/
   result: DNS does not resolve
@@ -22,17 +21,15 @@ server:
 authentication:
   required: true
   style: oauth2-bearer
-  detail: >-
-    Every backing operation requires an OAuth 2.0 bearer token from the environment-matched Auth0
-    issuer. A server implementing these tools must carry the token per call; there is no anonymous
-    operation in the API.
+  detail: Every backing operation requires an OAuth 2.0 bearer token from the environment-matched Auth0
+    issuer. A server implementing these tools must carry the token per call; there is no anonymous operation
+    in the API.
 safety:
   clinical: true
-  detail: >-
-    This is a medical triage surface. `results_read` can return an emergency `alarm` flag, and
-    `questions_explain` exposes the diagnosis and predictors behind a question. Any agent wired to
-    these tools must surface the alarm verbatim and must not paraphrase or suppress a differential.
-    The tools below are classified accordingly.
+  detail: This is a medical triage surface. `results_read` can return an emergency `alarm` flag, and `questions_explain`
+    exposes the diagnosis and predictors behind a question. Any agent wired to these tools must surface
+    the alarm verbatim and must not paraphrase or suppress a differential. The tools below are classified
+    accordingly.
 tools:
 - name: create_anonymous_interview
   description: Create a new de-identified triage interview from basic demographics (age and sex at minimum).
@@ -131,9 +128,8 @@ tools:
   consequence: read
   source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_read
 - name: answer_question
-  description: >-
-    Answer an interview question. Editing an earlier answer truncates the interview at that point and
-    regenerates every downstream question.
+  description: Answer an interview question. Editing an earlier answer truncates the interview at that
+    point and regenerates every downstream question.
   category: question
   action_class: acting
   consequence: write
@@ -145,9 +141,8 @@ tools:
   consequence: read
   source_operation: openapi/buoy-health-symptom-checker-openapi.yml#questions_explain
 - name: read_result
-  description: >-
-    Read the interview result — the ranked differential, the undiagnosed flag, and the emergency alarm
-    flag. Safety-critical output.
+  description: Read the interview result — the ranked differential, the undiagnosed flag, and the emergency
+    alarm flag. Safety-critical output.
   category: result
   action_class: connected
   consequence: safety-critical
@@ -156,3 +151,9 @@ coverage:
   rest_operations_total: 19
   tools_derived: 19
   operations_without_a_tool: 0
+deployment:
+  mode: none
+  verified: derived
+  tools: 19
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,118 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Queries API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Queries
+paths:
+  /queries/:
+    get:
+      tags:
+      - Queries
+      summary: List queries
+      description: Retrieves autocomplete text for user queries.
+      operationId: queries_list
+      parameters:
+      - name: text
+        in: query
+        description: User complaint search text.
+        required: true
+        examples:
+          TextExample:
+            value: neck pain
+            summary: Text Example
+        schema:
+          type: string
+      - name: tag
+        in: query
+        description: A label to include in the response. When provided, the server will return the response to the request with the optional 'tag' parameter included. This is to help clients order responses correctly when network latency is greater than the time between requests (e.g., when requests are sent with each character typed). A monotonically increasing integer value works best.
+        examples:
+          TagExample:
+            value: '1'
+            summary: Tag Example
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadAutoCompleteQuerySchema'
+              examples:
+                OK:
+                  value:
+                    text: neck p
+                    tag: '1'
+                    suggestions:
+                    - neck pain
+                    - neck pain moving down right arm
+                    - neck pain and headache
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                BadRequest:
+                  value:
+                  - Must provide query parameter 'text'
+                  summary: Bad Request
+        '401':
+          $ref: '#/components/responses/401Response'
+components:
+  schemas:
+    ReadAutoCompleteQuerySchema:
+      type: object
+      properties:
+        text:
+          title: text
+          minLength: 1
+          type: string
+          description: User complaint search text received on request.
+        tag:
+          title: tag
+          minLength: 1
+          type: string
+          description: Label defined on request to maintain correct suggestion ordering.
+        suggestions:
+          type: array
+          items:
+            type: string
+          description: List of autocompleted complaints based on text input.
+  responses:
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

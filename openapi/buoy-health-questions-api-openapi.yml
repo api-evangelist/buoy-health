@@ -1,0 +1,525 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Questions API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Questions
+paths:
+  /questions/:
+    get:
+      tags:
+      - Questions
+      summary: List questions
+      description: Lists interview questions.
+      operationId: questions_list
+      parameters:
+      - name: interview
+        in: query
+        description: A valid interview token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListQuestionsSchema'
+              examples:
+                Read question:
+                  $ref: '#/components/examples/ListQuestionResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+  /questions/{question_token}/:
+    get:
+      tags:
+      - Questions
+      summary: Read question
+      description: Retrieves an interview question.
+      operationId: questions_read
+      parameters:
+      - name: question_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a question.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadQuestionSchema'
+              examples:
+                Read question:
+                  $ref: '#/components/examples/QuestionResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+    put:
+      tags:
+      - Questions
+      summary: Update question
+      description: Updates the answer to a question. When a user updates the answer to a question, the interview resets so that the question sequence following the edit is all new. Thus, if the interview had fifteen questions and a user edits the eighth question, the interview will have eight answered questions and generate a new ninth question. This is done so that the system has the opportunity to change the question sequence to reflect the latest information from the user. If the updated question was asked before the interview complaint mode was changed, complaint mode is reset True.
+      operationId: questions_update
+      parameters:
+      - name: question_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a question.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuestionSchema'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadQuestionSchema'
+              examples:
+                Read question:
+                  $ref: '#/components/examples/QuestionResponse'
+        '400':
+          $ref: '#/components/responses/400Questions'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+      x-codegen-request-body-name: data
+  /questions/{question_token}/explain/:
+    get:
+      tags:
+      - Questions
+      summary: Explain question
+      description: Returns an object with diagnosis and predictors to help explain why a question was asked. Refer to the [questions explainer](doc:explainer-questions#using-the-explain-endpoint) for more details.
+      operationId: questions_explain
+      parameters:
+      - name: question_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a question.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionExplainSchema'
+              examples:
+                Explain question:
+                  $ref: '#/components/examples/QuestionExplainResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFoundHTML'
+components:
+  schemas:
+    AnswerExtraProperty:
+      title: extra
+      type:
+      - string
+      - 'null'
+      description: A string in which API clients may return extra information in limited scenarios. "D"-type questions should return the duration, in hours, that a user has been experiencing a given condition. Clients may optionally return additional context when the `free_text` field is true.
+    OptionFreeTextProperty:
+      title: free_text
+      type: boolean
+      description: A flag indicating whether free text from a user may be returned to Buoy in the `extra` parameter.
+    QuestionExplainSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/QuestionTokenProperty'
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        diagnosis:
+          type:
+          - string
+          - 'null'
+          description: A string indicating the diagnoses related to the question being asked.
+        predictors:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: An array of strings indicating how the user's previous inputs relate to the current question.
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    AnswerTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token that indicates the user's selected answer option(s).
+    UpdateQuestionSchema:
+      required:
+      - answer
+      type: object
+      properties:
+        answer:
+          type: array
+          description: An array of selected answer options.
+          items:
+            $ref: '#/components/schemas/SetAnswerSchema'
+    SetAnswerSchema:
+      required:
+      - token
+      type: object
+      description: An array of selected answer options.
+      properties:
+        token:
+          $ref: '#/components/schemas/AnswerTokenProperty'
+        extra:
+          $ref: '#/components/schemas/AnswerExtraProperty'
+    ReadQuestionSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/QuestionTokenProperty'
+        text:
+          $ref: '#/components/schemas/QuestionTextProperty'
+        choice:
+          $ref: '#/components/schemas/OptionChoiceProperty'
+        media:
+          $ref: '#/components/schemas/MediaProperty'
+        options:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ReadOptionSchema'
+        answer:
+          type: array
+          description: An array of selected answer options.
+          items:
+            $ref: '#/components/schemas/ReadAnswerSchema'
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        media_alttext:
+          $ref: '#/components/schemas/MediaAltTextProperty'
+        _links:
+          type: object
+          description: Conditional links that point to the next step of the interview.
+          properties:
+            next:
+              type:
+              - string
+              - 'null'
+              description: Absolute URI for next the question in an interview.
+              example: null
+            result:
+              type:
+              - string
+              - 'null'
+              description: Absolute URI for the result of an interview.
+              example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+    ReadOptionSchema:
+      type: object
+      description: An array of answer options.
+      properties:
+        token:
+          $ref: '#/components/schemas/OptionTokenProperty'
+        text:
+          $ref: '#/components/schemas/OptionTextProperty'
+        media:
+          $ref: '#/components/schemas/MediaProperty'
+        exclusive:
+          $ref: '#/components/schemas/OptionExclusiveProperty'
+        media_alttext:
+          $ref: '#/components/schemas/MediaAltTextProperty'
+        free_text:
+          $ref: '#/components/schemas/OptionFreeTextProperty'
+    OptionExclusiveProperty:
+      title: exclusive
+      type: boolean
+      description: A flag indicating whether an answer option should not be submitted with other answer options. Answer options with the `exclusive` parameter set to True should not be returned with any other answer options.
+    QuestionTextProperty:
+      title: text
+      description: A string containing the question text that should be displayed to a user.
+      minLength: 1
+      type: string
+    MediaProperty:
+      title: media
+      type: string
+      format: uri
+      description: An absolute URI linking to media. Clients should use the `content-type` of the associated file to determine how to display the file to the user.
+    QuestionTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying a question.
+    MediaAltTextProperty:
+      title: media_alttext
+      minLength: 1
+      type: string
+      description: A string providing alternative text for it's associated media.
+    OptionChoiceProperty:
+      title: choice
+      type: string
+      enum:
+      - M
+      - S
+      - D
+      description: A string indicating the response type of a question. Either 'S' for single-choice, 'M' for multiple-choice, or 'D' for duration.
+    ListQuestionsSchema:
+      type: array
+      description: An array of questions.
+      items:
+        type: object
+        properties:
+          token:
+            $ref: '#/components/schemas/QuestionTokenProperty'
+          text:
+            $ref: '#/components/schemas/QuestionTextProperty'
+          choice:
+            $ref: '#/components/schemas/OptionChoiceProperty'
+          media:
+            $ref: '#/components/schemas/MediaProperty'
+          options:
+            type: array
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/ReadOptionSchema'
+          answer:
+            type: array
+            description: An array of selected answer options.
+            items:
+              $ref: '#/components/schemas/ReadAnswerSchema'
+          interview:
+            $ref: '#/components/schemas/InterviewTokenProperty'
+          media_alttext:
+            $ref: '#/components/schemas/MediaAltTextProperty'
+          _links:
+            type: object
+            description: Conditional links that point to the next step of the interview.
+            properties:
+              next:
+                type:
+                - string
+                - 'null'
+                description: Absolute URI for next the question in an interview.
+                example: null
+              result:
+                type:
+                - string
+                - 'null'
+                description: Absolute URI for the result of an interview.
+                example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+    OptionTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying an answer option.
+    ReadAnswerSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/AnswerTokenProperty'
+        extra:
+          $ref: '#/components/schemas/AnswerExtraProperty'
+    OptionTextProperty:
+      title: text
+      description: A string containing the answer option text that should be displayed to a user.
+      minLength: 1
+      type: string
+  responses:
+    404NotFoundHTML:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: string
+          examples:
+            Not found:
+              value: '<h1>Not Found</h1>
+
+                <p>The requested resource was not found on this server.</p>'
+    400Questions:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+            properties:
+              non_field_errors:
+                type:
+                - array
+                - 'null'
+                items:
+                  type: string
+                description: A string returning details about a bad request.
+              answer:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    token:
+                      type: array
+                      items:
+                        type: string
+                      description: A string returning details about a bad request related to the answer token
+          examples:
+            Invalid answer token:
+              value:
+                non_field_errors:
+                - Invalid answer token(s). Choose from options.
+            Invalid extra value:
+              value:
+                non_field_errors:
+                - Invalid extra value.
+            Bad answer token UUID:
+              value:
+                answer:
+                - token:
+                  - Must be a valid UUID
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
+  examples:
+    QuestionExplainResponse:
+      value:
+        token: e177ab02-046e-49bd-ac9c-11431c4f2ba4
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        diagnosis: hip strain
+        predictors:
+        - hip pain
+    QuestionResponse:
+      value:
+        token: 60fe635d-5d70-4e5f-9702-2be36c66ff91
+        text: Is your hip pain getting better or worse?
+        choice: S
+        media: ''
+        options:
+        - token: 97075008-f2d6-491f-866e-fda9fde8da89
+          text: Getting better
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        - token: 296f9630-a45b-4b28-809a-676664f95ca1
+          text: Staying the same
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        - token: ce6a57b3-85f6-4db0-8156-a8653ef21ad3
+          text: Getting worse
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        answer:
+        - token: 97075008-f2d6-491f-866e-fda9fde8da89
+          extra: ''
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        media_alttext: ''
+        _links:
+        - next: https://sandbox.buoyhealth.com/api/questions/0f9b45c7-3004-4250-94ad-7d34004056d9/
+    ListQuestionResponse:
+      value:
+      - token: 60fe635d-5d70-4e5f-9702-2be36c66ff91
+        text: Is your hip pain getting better or worse?
+        choice: S
+        media: ''
+        options:
+        - token: 97075008-f2d6-491f-866e-fda9fde8da89
+          text: Getting better
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        - token: 296f9630-a45b-4b28-809a-676664f95ca1
+          text: Staying the same
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        - token: ce6a57b3-85f6-4db0-8156-a8653ef21ad3
+          text: Getting worse
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        answer:
+        - token: 97075008-f2d6-491f-866e-fda9fde8da89
+          extra: ''
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        media_alttext: ''
+      - token: 42effc1c-d938-4e4c-ab8e-51d9d5ec4488
+        text: Is your hip pain constant or come-and-go?
+        media: ''
+        options:
+        - token: 2f9b34ca-3b60-4af3-936c-178dc79b3722"
+          text: constant
+          media: null
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        - token: b6df264a-34e0-4974-b6d3-874c79b10632
+          text: Come-and-go
+          media: ''
+          exclusive: true
+          media_alttext: ''
+          free_text: false
+        answer: []
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        media_alttext: ''
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

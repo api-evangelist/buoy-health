@@ -1,0 +1,125 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Intents API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Intents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List intents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/intents/",
+            "params": [
+              {
+                "name": "interview",
+                "value": "",
+                "type": "query",
+                "description": "A UUID-formatted token uniquely identifying an interview instance."
+              }
+            ]
+          },
+          "docs": "Returns a list of intents associated with an interview."
+        },
+        {
+          "info": {
+            "name": "Create intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/intents/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new intent.\n\nIntents gathered at the start of an interview (or after entering complaints) should be submitted with the \"INTERVIEW_START\" event. Intents gathered at the end of an interview should be submitted with the \"INTERVIEW_RESULT\" event. An empty string (\"\") should always be submitted in the detail parameter."
+        },
+        {
+          "info": {
+            "name": "Read intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/intents/:intent_token/",
+            "params": [
+              {
+                "name": "intent_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying an intent."
+              }
+            ]
+          },
+          "docs": "Returns an object describing the current state of an intent."
+        },
+        {
+          "info": {
+            "name": "Update intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/intents/:intent_token/",
+            "params": [
+              {
+                "name": "intent_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying an intent."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an intent."
+        },
+        {
+          "info": {
+            "name": "Delete intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/intents/:intent_token/",
+            "params": [
+              {
+                "name": "intent_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying an intent."
+              }
+            ]
+          },
+          "docs": "Deletes an intent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

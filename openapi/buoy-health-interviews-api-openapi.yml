@@ -1,0 +1,433 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Interviews API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Interviews
+paths:
+  /interviews/anonymous/:
+    post:
+      tags:
+      - Interviews
+      summary: Create anonymous interview
+      description: 'Creates a new anonymous interview.
+
+
+        This endpoint uses basic demographic information (age and sex at minimum) to create a de-identified interview. It does not require an authenticated user or store user information with a specific profile in Buoy.'
+      operationId: interviews_anonymous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnonymousInterviewRequestSchema'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAnonymousInterviewResponseSchema'
+              examples:
+                OK:
+                  value:
+                    token: 07218b0b-bed3-4d9b-92b4-795d1e21a21c
+                    profile:
+                      is_self: true
+                      age: 63
+                      sex: m
+                    start_time: 01/01/2020 12:00:00
+                    end_time: null
+                    location:
+                      latitude: 42.3377967
+                      longitude: -71.0705763
+                      postal_code: 02118
+                      country: US
+                      approximate: true
+                    mode: input
+                    should_display_alarm: false
+        '400':
+          $ref: '#/components/responses/400MissingProfileResponse'
+        '401':
+          $ref: '#/components/responses/401Response'
+      x-codegen-request-body-name: data
+  /interviews/{interview_token}/:
+    get:
+      tags:
+      - Interviews
+      summary: Read interview
+      description: Describes an interview instance.
+      operationId: interviews_read
+      parameters:
+      - name: interview_token
+        in: path
+        description: A UUID-formatted token uniquely identifying an interview instance.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadUpdateInterviewSchema'
+              examples:
+                OK:
+                  value:
+                  - token: 07218b0b-bed3-4d9b-92b4-795d1e21a21c
+                    start_time: 01/01/2020 12:00:00
+                    end_time: 01/01/2020 12:02:00
+                    profile: 8849e11e-ceab-414f-a943-9ccfd5dd8179
+                    location:
+                      latitude: 42.3377967
+                      longitude: -71.0705763
+                      postal_code: 02118
+                      country: US
+                      approximate: true
+                    mode: protocol
+                    should_display_alarm: false
+                    _links:
+                      result: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                NotFound:
+                  value:
+                    detail: Not found.
+    put:
+      tags:
+      - Interviews
+      summary: Update interview
+      description: 'Updates the interview operation mode one of the three modes: input, protocol, or differential.
+
+
+        For more information on the differences of the interview modes, please refer to the [Interviews explainer page.](doc:explainer-interviews)'
+      operationId: interviews_update
+      parameters:
+      - name: interview_token
+        in: path
+        description: A UUID-formatted token uniquely identifying an interview instance.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInterviewRequestSchema'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadUpdateInterviewSchema'
+              examples:
+                OK:
+                  value:
+                    token: 89aac148-ea1b-4801-bd3e-e27a0f9d10b9
+                    start_time: 01/01/2020 12:00:00
+                    end_time: null
+                    profile: 742970fd-7b92-45d2-b935-03841b35259a
+                    location:
+                      latitude: 42.3377967
+                      longitude: -71.0705763
+                      postal_code: 02118
+                      country: US
+                      approximate: true
+                    mode: differential
+                    should_display_alarm: false
+                    _links:
+                      next: http://sandbox.buoyhealth.com/api/questions/311730e9-f0f6-42de-ac05-9edb8f8b45e6/
+        '202':
+          description: Indicates the interview mode was accepted, but the resource won't be updated. The interview mode is reset automatically when the user either adds/updates a chief complaint or edits a related question answer. Additionally, in some cases where the chief complaint(s) could not be correctly linked to a diagnosis, a new chief complaint needs to be added.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                Accepted:
+                  value:
+                    status: Accepted
+        '401':
+          $ref: '#/components/responses/401Response'
+        '409':
+          description: Indicates that the interview is not in a state that can be updated. Interviews can not be updated if they have been completed, do not have a chief complaint or have unanswered questions.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                Conflict:
+                  value: Interview has an unanswered question.
+      x-codegen-request-body-name: data
+components:
+  schemas:
+    InterviewStartTimeProperty:
+      title: start_time
+      type: string
+      description: The time at which an interview was created in Central Daylight Time (CDT).
+      format: date-time
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    LinksProperty:
+      title: _links
+      type: object
+      description: Conditional links that point to the next step of the interview.
+      properties:
+        next:
+          type: string
+          description: Absolute URI for next the question in an interview.
+          example: null
+        result:
+          type: string
+          description: Absolute URI for the result of an interview.
+          example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+        interview:
+          type: string
+          description: Absolute URI for an interview. Returned in instances where there are no protocol based questions available in addition to the _msg parameter being set to \"No protocol-based questions or results. Try \'differential\' mode.\"
+        complaints:
+          type: string
+          description: Absolute URI for a complaint. Returned in instances where there are no differential based questions available in addition to the _msg parameter being set to \"No differential-based questions or results. Add or update complaints.\"
+    MsgProperty:
+      title: _msg
+      type:
+      - string
+      - 'null'
+      description: Conditional msgs displayed by the interview.
+    PostalCodeProperty:
+      title: postal_code
+      maxLength: 32
+      minLength: 1
+      type: string
+      description: The user's postal code. In the US, this is equivalent to zip code.
+      example: 02118
+    CreateAnonymousInterviewResponseSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ProfileTokenProperty'
+        profile:
+          $ref: '#/components/schemas/AnonymousProfileSchema'
+        start_time:
+          $ref: '#/components/schemas/InterviewStartTimeProperty'
+        end_time:
+          $ref: '#/components/schemas/InterviewEndTimeProperty'
+        location:
+          $ref: '#/components/schemas/LocationProperty'
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+        should_display_alarm:
+          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
+      required:
+      - end_time
+      - location
+      - start_time
+      - token
+    LongitudeProperty:
+      title: longitude
+      type: number
+      description: Longitude coordinate of user's current location.
+      minimum: -180
+      maximum: 180
+    CreateLocationProperty:
+      title: location
+      type: object
+      description: The user's location. When creating a new interview, either latitude and longitude or postal_code and country should be provided. If neither are provided, Buoy will attempt to determine a location based off of IP address.
+      properties:
+        latitude:
+          $ref: '#/components/schemas/LatitudeProperty'
+        longitude:
+          $ref: '#/components/schemas/LongitudeProperty'
+        postal_code:
+          $ref: '#/components/schemas/PostalCodeProperty'
+        country:
+          $ref: '#/components/schemas/CountryProperty'
+    LatitudeProperty:
+      title: latitude
+      type: number
+      description: Latitude coordinate of user's current location.
+      minimum: -90
+      maximum: 90
+    InterviewShouldDisplayAlarmProperty:
+      title: should_display_alarm
+      type: boolean
+      description: A flag indicating if an alarm should be displayed to the user.
+    ApproximateProperty:
+      title: approximate
+      type: boolean
+      description: Indicates that the user did not provide location data and user's location data was determined through an IP address lookup approximation.
+      example: US
+    AnonymousProfileSchema:
+      title: profile
+      description: A UUID-formatted token uniquely identifying an interview profile.
+      required:
+      - age
+      - sex
+      type: object
+      properties:
+        is_self:
+          $ref: '#/components/schemas/IsSelfProperty_DefaultTrue'
+        age:
+          $ref: '#/components/schemas/AgeProperty'
+        sex:
+          $ref: '#/components/schemas/SexProperty'
+    SexProperty:
+      title: sex
+      type: string
+      description: The user's sex assigned at birth, either 'm' for male or 'f' for female.
+      enum:
+      - m
+      - f
+      example: m
+    ProfileTokenProperty:
+      title: profile
+      type: string
+      description: A UUID-formatted token uniquely identifying a user profile.
+      format: uuid
+    ReadUpdateInterviewSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        start_time:
+          $ref: '#/components/schemas/InterviewStartTimeProperty'
+        end_time:
+          $ref: '#/components/schemas/InterviewEndTimeProperty'
+        profile:
+          $ref: '#/components/schemas/ProfileTokenProperty'
+        location:
+          $ref: '#/components/schemas/LocationProperty'
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+        should_display_alarm:
+          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
+        _links:
+          $ref: '#/components/schemas/LinksProperty'
+        _msg:
+          $ref: '#/components/schemas/MsgProperty'
+    CountryProperty:
+      title: country
+      minLength: 1
+      type: string
+      description: The user's IATA defined country code.
+      example: US
+    UpdateInterviewRequestSchema:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+    LocationProperty:
+      title: location
+      type: object
+      description: The user's current location.
+      properties:
+        latitude:
+          $ref: '#/components/schemas/LatitudeProperty'
+        longitude:
+          $ref: '#/components/schemas/LongitudeProperty'
+        postal_code:
+          $ref: '#/components/schemas/PostalCodeProperty'
+        country:
+          $ref: '#/components/schemas/CountryProperty'
+        approximate:
+          $ref: '#/components/schemas/ApproximateProperty'
+    CreateAnonymousInterviewRequestSchema:
+      type: object
+      properties:
+        profile:
+          $ref: '#/components/schemas/AnonymousProfileSchema'
+        location:
+          $ref: '#/components/schemas/CreateLocationProperty'
+      required:
+      - profile
+    AgeProperty:
+      title: age
+      maximum: 120
+      minimum: 2
+      type: number
+      description: Float between 2 and 120 representing the user's age.
+      example: 63
+    IsSelfProperty_DefaultTrue:
+      title: is_self
+      type: boolean
+      description: Boolean representing if a user is answering as themselves ('true') or for someone else ('false'). Defaults to 'true' if not provided.
+      default: true
+      example: true
+    InterviewEndTimeProperty:
+      title: end_time
+      type:
+      - string
+      - 'null'
+      description: The time at which results were made available in Central Daylight Time (CDT).
+      format: date-time
+    InterviewModeProperty:
+      title: mode
+      type: string
+      description: Interview operation mode; input, protocol, or differential.
+      enum:
+      - input
+      - protocol
+      - differential
+  responses:
+    400MissingProfileResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Bad request:
+              value:
+                profile:
+                - This field is required.
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

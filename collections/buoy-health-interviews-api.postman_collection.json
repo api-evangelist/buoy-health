@@ -1,0 +1,764 @@
+{
+  "item": [
+    {
+      "id": "d1210689-881f-4b5a-aae0-c7f832731bc8",
+      "name": "Interviews",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ef4c8393-165b-4f10-a55c-fb0eeb676c52",
+          "name": "Create anonymous interview",
+          "request": {
+            "name": "Create anonymous interview",
+            "description": {
+              "content": "Creates a new anonymous interview.\n\nThis endpoint uses basic demographic information (age and sex at minimum) to create a de-identified interview. It does not require an authenticated user or store user information with a specific profile in Buoy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "interviews",
+                "anonymous",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profile\": {\n    \"age\": \"<number>\",\n    \"sex\": \"<string>\",\n    \"is_self\": true\n  },\n  \"location\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"postal_code\": \"<string>\",\n    \"country\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "64c311d7-4cf6-476e-b36d-c6dd33db4905",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    "anonymous",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": {\n    \"age\": 63,\n    \"sex\": \"m\",\n    \"is_self\": true\n  },\n  \"location\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"postal_code\": \"<string>\",\n    \"country\": \"US\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"07218b0b-bed3-4d9b-92b4-795d1e21a21c\",\n  \"profile\": {\n    \"is_self\": true,\n    \"age\": 63,\n    \"sex\": \"m\"\n  },\n  \"start_time\": \"01/01/2020 12:00:00\",\n  \"end_time\": null,\n  \"location\": {\n    \"latitude\": 42.3377967,\n    \"longitude\": -71.0705763,\n    \"postal_code\": 2118,\n    \"country\": \"US\",\n    \"approximate\": true\n  },\n  \"mode\": \"input\",\n  \"should_display_alarm\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89a2b8dd-7308-42d2-8497-0b991d73de9b",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    "anonymous",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": {\n    \"age\": 63,\n    \"sex\": \"m\",\n    \"is_self\": true\n  },\n  \"location\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"postal_code\": \"<string>\",\n    \"country\": \"US\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"profile\": [\n    \"This field is required.\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f819ec1-e84c-4532-b8c2-16908ae81024",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    "anonymous",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": {\n    \"age\": 63,\n    \"sex\": \"m\",\n    \"is_self\": true\n  },\n  \"location\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"postal_code\": \"<string>\",\n    \"country\": \"US\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3868e116-a058-4645-8f05-a666a50661ae",
+          "name": "Read interview",
+          "request": {
+            "name": "Read interview",
+            "description": {
+              "content": "Describes an interview instance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "interviews",
+                ":interview_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "interview_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "de38dc51-053d-4b86-8957-9afcb5b194cf",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"token\": \"07218b0b-bed3-4d9b-92b4-795d1e21a21c\",\n    \"start_time\": \"01/01/2020 12:00:00\",\n    \"end_time\": \"01/01/2020 12:02:00\",\n    \"profile\": \"8849e11e-ceab-414f-a943-9ccfd5dd8179\",\n    \"location\": {\n      \"latitude\": 42.3377967,\n      \"longitude\": -71.0705763,\n      \"postal_code\": 2118,\n      \"country\": \"US\",\n      \"approximate\": true\n    },\n    \"mode\": \"protocol\",\n    \"should_display_alarm\": false,\n    \"_links\": {\n      \"result\": \"http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1160e3db-3e8f-4a7e-ae0d-30ab3ede629d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "517c5134-a088-438f-b3c9-2c2bf820377f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f250cd4-55e9-4417-aeb9-53b4a170e29b",
+          "name": "Update interview",
+          "request": {
+            "name": "Update interview",
+            "description": {
+              "content": "Updates the interview operation mode one of the three modes: input, protocol, or differential.\n\nFor more information on the differences of the interview modes, please refer to the [Interviews explainer page.](doc:explainer-interviews)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "interviews",
+                ":interview_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "interview_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a238804-8351-43b2-a13a-6ff2f84a1ae3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"89aac148-ea1b-4801-bd3e-e27a0f9d10b9\",\n  \"start_time\": \"01/01/2020 12:00:00\",\n  \"end_time\": null,\n  \"profile\": \"742970fd-7b92-45d2-b935-03841b35259a\",\n  \"location\": {\n    \"latitude\": 42.3377967,\n    \"longitude\": -71.0705763,\n    \"postal_code\": 2118,\n    \"country\": \"US\",\n    \"approximate\": true\n  },\n  \"mode\": \"differential\",\n  \"should_display_alarm\": false,\n  \"_links\": {\n    \"next\": \"http://sandbox.buoyhealth.com/api/questions/311730e9-f0f6-42de-ac05-9edb8f8b45e6/\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd9ec98b-afff-4738-a99e-6303d867a3f1",
+              "name": "Indicates the interview mode was accepted, but the resource won't be updated. The interview mode is reset automatically when the user either adds/updates a chief complaint or edits a related question answer. Additionally, in some cases where the chief complaint(s) could not be correctly linked to a diagnosis, a new chief complaint needs to be added.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"Accepted\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f44c6148-57ea-4edc-ba55-dfe1087e8ed6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c738ac9-dbb5-40a6-998f-0bae08687782",
+              "name": "Indicates that the interview is not in a state that can be updated. Interviews can not be updated if they have been completed, do not have a chief complaint or have unanswered questions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "interviews",
+                    ":interview_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "interview_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Interview has an unanswered question.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.sandbox.buoyhealth.com/symptom-checker/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7576f204-0022-49b7-8ea3-6bb7dc49fc64",
+    "name": "Buoy Symptom Checker Interviews API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Contact Support:\n Email: alex.nixon@buoyhealth.com",
+      "type": "text/plain"
+    }
+  }
+}

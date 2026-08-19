@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Questions API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Questions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/questions/",
+            "params": [
+              {
+                "name": "interview",
+                "value": "",
+                "type": "query",
+                "description": "A valid interview token"
+              }
+            ]
+          },
+          "docs": "Lists interview questions."
+        },
+        {
+          "info": {
+            "name": "Read question",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/questions/:question_token/",
+            "params": [
+              {
+                "name": "question_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a question."
+              }
+            ]
+          },
+          "docs": "Retrieves an interview question."
+        },
+        {
+          "info": {
+            "name": "Update question",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/questions/:question_token/",
+            "params": [
+              {
+                "name": "question_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a question."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the answer to a question. When a user updates the answer to a question, the interview resets so that the question sequence following the edit is all new. Thus, if the interview had fifteen questions and a user edits the eighth question, the interview will have eight answered questions and generate a new ninth question. This is done so that the system has the opportunity to change the question sequence to reflect the latest information from the user. If the updated question was asked befo"
+        },
+        {
+          "info": {
+            "name": "Explain question",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/questions/:question_token/explain/",
+            "params": [
+              {
+                "name": "question_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a question."
+              }
+            ]
+          },
+          "docs": "Returns an object with diagnosis and predictors to help explain why a question was asked. Refer to the [questions explainer](doc:explainer-questions#using-the-explain-endpoint) for more details."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

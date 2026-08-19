@@ -1,0 +1,316 @@
+openapi: 3.2.0
+info:
+  title: Buoy Symptom Checker Results API
+  termsOfService: https://static.buoyhealth.com/Buoy+API+Terms+of+Service.pdf
+  contact:
+    email: alex.nixon@buoyhealth.com
+  version: v2.0
+  x-logo:
+    url: https://www.buoyhealth.com/cms/images/buoy_logo.svg
+servers:
+- url: https://api.sandbox.buoyhealth.com/symptom-checker/v2
+- url: https://api.buoyhealth.com/symptom-checker/v2
+security:
+- Bearer: []
+tags:
+- name: Results
+paths:
+  /results/{result_token}/:
+    get:
+      tags:
+      - Results
+      summary: Read result
+      description: Returns an object describing an interview result. Refer to [the results explainer](doc:explainer-results) for a detailed description of the result endpoint.
+      operationId: results_read
+      parameters:
+      - name: result_token
+        in: path
+        description: A UUID-formatted token uniquely identifying a result.
+        required: true
+        schema:
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadResultsSchema'
+              examples:
+                Differential and Triage:
+                  $ref: '#/components/examples/ResultsDifferentialAndTriageResponse'
+                Triage Only:
+                  $ref: '#/components/examples/ResultsTriageOnlyResponse'
+                No Result:
+                  $ref: '#/components/examples/ResultsNoResult'
+        '204':
+          description: No content (the interview is not finished).
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                Not Found:
+                  value:
+                    status: No Content
+        '401':
+          $ref: '#/components/responses/401Response'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+components:
+  examples:
+    ResultsTriageOnlyResponse:
+      value:
+        token: db38c893-1865-4683-87f4-abcc00d7032d
+        alarm: true
+        undiagnosed: true
+        differential: []
+        triage:
+          token: 2873df99-7ef1-45c3-bf1e-ecaf30b657cc
+          level: 7
+          description: Emergency medical service
+        triage_explanation:
+          explanation: Because of your blue lips or tongue and difficulty getting enough air, you may have coronavirus.
+          potential_condition:
+            name: coronavirus
+            overview: Call 911 and mention you may have coronavirus so they can prepare.
+            care_notes: There is no treatment to cure coronavirus (COVID-19), but it is advised to see a healthcare provider for testing. Mild symptoms can be treated the same as one would do for the common cold or flu. Very young children, the elderly, and people with known (heart- or lung) disease or a suppressed immune system can become more ill. These people might need extra support or treatment to help with breathing issues. It is very important to prevent the virus from spreading by washing hands frequently, covering mouth and nose while sneezing and coughing, and by staying away from other people when sick.
+    ResultsNoResult:
+      value:
+        token: db38c893-1865-4683-87f4-abcc00d7032d
+        alarm: false
+        undiagnosed: true
+        differential: []
+        triage:
+          token: null
+          level: null
+          description: We didn’t find a good match for your symptoms. Please try again by using a different description for the symptom that is bothering you the most.
+        triage_explanation:
+          explanation: ''
+          potential_condition: null
+    ResultsDifferentialAndTriageResponse:
+      value:
+        token: eba8c893-1865-4683-87f4-abcc00d7032e
+        alarm: false
+        undiagnosed: false
+        differential:
+        - name: Hip strain
+          overview: A strain, also known as a pulled muscle, occurs when a muscle is stretched or torn. A hip strain is a result of a pulled hip muscle.
+          care_notes: You can safely treat this condition on your own. A muscle strain can be treated with rest, ice, compression, and pain medication.
+          token: 4fac5aa4-412f-4de3-af06-ecdcd608aa09
+          duration: 6 months
+          could_explain: This could explain your difficulty moving the hip, hip pain, and symptoms worse with exercise.
+          cant_explain: This wouldn't explain your weight gain.
+          usually_causes: ''
+          triage:
+            token: null
+            level: 1
+            description: Self-treatment
+        - name: Femoral stress fracture
+          overview: A femoral stress fracture is a small crack in the thigh bone. It is usually caused by overuse of the bone, often from physical activity.
+          care_notes: You should consider visiting a medical professional to discuss your symptoms. A femoral stress fracture can be evaluated with a review of your symptoms and medical history. An x-ray or MRI may be performed as well. Once diagnosed, it can be treated with pain medication and taking a break from weight-bearing physical activity for a few weeks. More severe injuries may require surgery. Recovery usually takes up to 12 weeks.
+          token: 1872df99-7ef1-45c3-bf1e-ecaf30b6578a
+          duration: many years
+          could_explain: This could explain your Positive Hop Test, symptoms that worsen with running, and symptoms worse with exercise.
+          cant_explain: This wouldn't explain your hip pain or weight gain
+          usually_causes: This is typically also associated with dull, achy hip pain and pain in one thigh.
+          triage:
+            token: null
+            level: 4
+            description: Primary care doctor
+        - name: Hip pain of unspecified cause
+          overview: The hip is a really complex joint, and there are a number of things that can cause pain. However, because of how complicated it is, it's often not possible to figure out what is causing the pain.
+          care_notes: You can rest at home, keeping weight off of your affected leg. If things do not improve, go see your doctor. If things get worse, like you develop a fever, the hip pain worsens, or other symptoms crop up, go to the doctor immediately.
+          token: a74c276c-4443-4873-b3db-f0410bbd5a99
+          duration: 2 months
+          could_explain: This could explain your pain in one hip.
+          cant_explain: This wouldn't explain your weight gain.
+          usually_causes: ''
+          triage:
+            token: null
+            level: 1
+            description: Self-treatment
+        triage:
+          token: null
+          level: 4
+          description: Primary care doctor
+        triage_explanation:
+          explanation: ''
+          potential_condition: null
+  schemas:
+    ReadResultsSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          format: uuid
+          description: A UUID-formatted token uniquely identifying a result.
+        alarm:
+          title: alarm
+          type: boolean
+          description: A flag indicating if an alarming (emergency) result is present.
+        undiagnosed:
+          title: undiagnosed
+          type: boolean
+          description: A flag indicating if the interview did not result in a differential diagnosis.
+        differential:
+          title: differential
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                title: name
+                type: string
+                description: The name of the condition match.
+              overview:
+                title: overview
+                type:
+                - string
+                - 'null'
+                description: A description describing the condition match. May be null.
+              care_notes:
+                title: care_notes
+                type:
+                - string
+                - 'null'
+                description: A description of how to care for the condition match. May be null.
+              token:
+                title: token
+                type: string
+                format: uuid
+                description: A UUID-formatted token uniquely identifying a condition match.
+              duration:
+                title: duration
+                type: string
+                description: A description of how long the condition match is likely to present.
+              could_explain:
+                title: could_explain
+                type: string
+                description: A description of how the user's complaints and answers could explain the condition match.
+              cant_explain:
+                title: cant_explain
+                type:
+                - string
+                - 'null'
+                description: A description of how the user's complaints and answers can't explain the condition match.
+              usually_causes:
+                title: usually_causes
+                type:
+                - string
+                - 'null'
+                description: A descriptions of related conditions that are usually caused by the condition match but were not explicitly observed in the interview.
+              triage:
+                type: object
+                description: An object representing the level of care suggested (triage level) for a condition match. Refer to the [triage levels reference guide](doc:triage-levels) for more details.
+                properties:
+                  token:
+                    title: token
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    description: A UUID-formatted token uniquely identifying a triage recommendation for a condition match. May be null.
+                  level:
+                    title: level
+                    type:
+                    - integer
+                    - 'null'
+                    minimum: 0
+                    maximum: 7
+                    description: An integer between 0 and 7 representing the triage level for a condition match.
+                  description:
+                    title: description
+                    type: string
+                    description: A description of the triage level for a condition match.
+          description: An array containing up to three condition (diagnoses) matches.
+        triage:
+          title: triage
+          type: object
+          description: An object providing information about about the level of care suggested (triage level) for a triage-only result. Refer to the [triage levels reference guide](doc:triage-levels) for more details.
+          properties:
+            token:
+              title: token
+              type:
+              - string
+              - 'null'
+              format: uuid
+              description: A UUID-formatted token uniquely identifying a triage level for a result. May be null.
+            level:
+              title: level
+              type: integer
+              minimum: 0
+              maximum: 7
+              description: An integer between 0 and 7 representing the triage level for a result.
+            description:
+              title: description
+              type: string
+              description: A description of the triage level for a condition match.
+        triage_explanation:
+          title: triage_explanation
+          type: object
+          description: An object providing an explanation for a triage only result.
+          properties:
+            explanation:
+              title: explanation
+              type:
+              - string
+              - 'null'
+              description: A description of why a particular triage level was provided.
+            potential_condition:
+              title: potential_condition
+              type:
+              - object
+              - 'null'
+              description: A description of a potential condition match to be provided with the triage explanation. May be null.
+              properties:
+                name:
+                  title: name
+                  type: string
+                  description: The name of the potential condition match.
+                overview:
+                  title: overview
+                  type: string
+                  description: A description describing the condition match.
+                care_notes:
+                  title: care_notes
+                  type: string
+                  description: A description of how to care for the potential condition match.
+  responses:
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
+  securitySchemes:
+    Bearer:
+      type: oauth2
+      description: '[Full documentation for the Buoy Auth API is found here.](https://sandbox.buoyhealth.com/auth/redoc/)'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.sandbox.buoyhealth.com/authorize
+          tokenUrl: https://auth.sandbox.buoyhealth.com/oauth/token
+          scopes: {}

@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Buoy Symptom Checker Results API",
+    "version": "v2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://auth.sandbox.buoyhealth.com/authorize",
+      "accessTokenUrl": "https://auth.sandbox.buoyhealth.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Results",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sandbox.buoyhealth.com/symptom-checker/v2/results/:result_token/",
+            "params": [
+              {
+                "name": "result_token",
+                "value": "",
+                "type": "path",
+                "description": "A UUID-formatted token uniquely identifying a result."
+              }
+            ]
+          },
+          "docs": "Returns an object describing an interview result. Refer to [the results explainer](doc:explainer-results) for a detailed description of the result endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

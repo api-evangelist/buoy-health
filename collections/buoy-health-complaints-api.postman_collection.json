@@ -1,0 +1,1137 @@
+{
+  "item": [
+    {
+      "id": "b9c3544c-6ae5-4535-aae8-07e2c4505e9c",
+      "name": "Complaints",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c26347d0-4746-4f75-86cd-00235a40c057",
+          "name": "List complaints",
+          "request": {
+            "name": "List complaints",
+            "description": {
+              "content": "Returns a list of complaints associated with an interview.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "complaints",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interview",
+                  "value": "<string>",
+                  "description": "(Required) A UUID-formatted token uniquely identifying an interview instance."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cb818c15-c64f-481f-b3d3-b5ce193d9b46",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"token\": \"290197ae-fa22-42a9-9ce4-0b771a8ace2c\",\n    \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n    \"query\": \"back pain\",\n    \"interpretations\": [\n      {\n        \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\",\n        \"title\": \"back pain\",\n        \"description\": \"I have back pain\"\n      },\n      {\n        \"token\": \"4468fa90-25f6-4bd9-90b9-27ce2354a77b\",\n        \"title\": \"upper back pain\",\n        \"description\": \"The upper part of my back hurts\"\n      },\n      {\n        \"token\": \"7684f2bb-31df-414b-add9-eeeb1496cc61\",\n        \"title\": \"lower back pain\",\n        \"description\": \"I have lower back pain\"\n      },\n      {\n        \"token\": \"8bec7b05-7894-42ee-8fef-9beb8a326693\",\n        \"title\": \"dull lower back pain\",\n        \"description\": \"My lower back pain is dull\"\n      }\n    ],\n    \"clarification\": [\n      {\n        \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360.\"\n      }\n    ]\n  },\n  {\n    \"token\": \"7d4eabe2-e5f2-42b5-8f7e-a33e140a4dbc\",\n    \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n    \"query\": \"hip pain\",\n    \"interpretations\": [\n      {\n        \"token\": \"e1943b59-94f9-496d-a663-395c4cb1e0b1\",\n        \"title\": \"hip pain\",\n        \"description\": \"I have hip pain\"\n      },\n      {\n        \"token\": \"ed9895d8-fdd3-4a17-a9a6-14fcd01ccb69\",\n        \"title\": \"deep, throbbing hip pain\",\n        \"description\": \"The hip pain is deep and throbbing\"\n      },\n      {\n        \"token\": \"96bd510d-1fea-4420-9717-66b7074800ff\",\n        \"title\": \"dull, achy hip pain\",\n        \"description\": \"The hip pain is dull and achy\"\n      }\n    ],\n    \"clarification\": [\n      {\n        \"token\": \"e1943b59-94f9-496d-a663-395c4cb1e0b1\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c712bf1-40de-48f2-b327-5d7387502ab0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1ebfee6-0bae-44e4-bc7a-9d87b0128387",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interview",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36d18bfe-0a5a-4404-99a2-444824aa35b5",
+          "name": "Create complaint",
+          "request": {
+            "name": "Create complaint",
+            "description": {
+              "content": "Adds a chief complaint to an interview.\n\nThe client should not expect that an interpretation will be returned for all user-generated complaints. The AI will do its best to interpret the query, but it is not guaranteed to succeed in finding appropriate interpretation matches.\n\nIn instances where no interpretations are returned, the user should be asked to submit a new query. If a complaint is accepted while the interview is in the \"protocol\" or \"differential\" mode, the interview will be reset to the \"input\" mode.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "complaints",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interview\": \"<uuid>\",\n  \"query\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b324b900-1559-4b07-b3fb-316682f13492",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interview\": \"<uuid>\",\n  \"query\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"290197ae-fa22-42a9-9ce4-0b771a8ace2c\",\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"query\": \"back pain\",\n  \"interpretations\": [\n    {\n      \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\",\n      \"title\": \"back pain\",\n      \"description\": \"I have back pain\"\n    },\n    {\n      \"token\": \"4468fa90-25f6-4bd9-90b9-27ce2354a77b\",\n      \"title\": \"upper back pain\",\n      \"description\": \"The upper part of my back hurts\"\n    },\n    {\n      \"token\": \"7684f2bb-31df-414b-add9-eeeb1496cc61\",\n      \"title\": \"lower back pain\",\n      \"description\": \"I have lower back pain\"\n    },\n    {\n      \"token\": \"8bec7b05-7894-42ee-8fef-9beb8a326693\",\n      \"title\": \"dull lower back pain\",\n      \"description\": \"My lower back pain is dull\"\n    }\n  ],\n  \"clarification\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "738e8f6d-eba7-4c71-bb2f-d937c13cc85c",
+              "name": "No content. The system could not interpret the query.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interview\": \"<uuid>\",\n  \"query\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "79881e30-a452-43c3-b15e-47e5e733cc05",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interview\": \"<uuid>\",\n  \"query\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"[Invalid 'interview']\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "365fe3c4-58d3-4068-b593-d1b536fed63c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interview\": \"<uuid>\",\n  \"query\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1656a697-24c3-470b-8d62-739569e876a7",
+          "name": "Read complaint",
+          "request": {
+            "name": "Read complaint",
+            "description": {
+              "content": "Returns an object describing the current state of a complaint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "571d3991-1ed2-41ff-88ce-f832590be240",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"290197ae-fa22-42a9-9ce4-0b771a8ace2c\",\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"query\": \"back pain\",\n  \"interpretations\": [\n    {\n      \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\",\n      \"title\": \"back pain\",\n      \"description\": \"I have back pain\"\n    },\n    {\n      \"token\": \"4468fa90-25f6-4bd9-90b9-27ce2354a77b\",\n      \"title\": \"upper back pain\",\n      \"description\": \"The upper part of my back hurts\"\n    },\n    {\n      \"token\": \"7684f2bb-31df-414b-add9-eeeb1496cc61\",\n      \"title\": \"lower back pain\",\n      \"description\": \"I have lower back pain\"\n    },\n    {\n      \"token\": \"8bec7b05-7894-42ee-8fef-9beb8a326693\",\n      \"title\": \"dull lower back pain\",\n      \"description\": \"My lower back pain is dull\"\n    }\n  ],\n  \"clarification\": [\n    {\n      \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\"\n    }\n  ],\n  \"_links\": {\n    \"next\": \"https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc11c14d-ea09-4880-b0d7-c18cc8de06d4",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ce0af12-1d02-4636-8c0c-0ac94a1a3dbf",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8cbd5d8-ec39-45ee-954f-793acaa662b3",
+          "name": "Update complaint",
+          "request": {
+            "name": "Update complaint",
+            "description": {
+              "content": "Updates a complaint with a clarification chosen from an AI generated list of interpretations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clarification\": {\n    \"token\": \"<uuid>\"\n  },\n  \"interview\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e4418b56-23d2-48f0-aa3a-5b495038913e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clarification\": {\n    \"token\": \"<uuid>\"\n  },\n  \"interview\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"290197ae-fa22-42a9-9ce4-0b771a8ace2c\",\n  \"interview\": \"4cfcc68d-d365-4af5-8b4d-15881259e0be\",\n  \"query\": \"back pain\",\n  \"interpretations\": [\n    {\n      \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\",\n      \"title\": \"back pain\",\n      \"description\": \"I have back pain\"\n    },\n    {\n      \"token\": \"4468fa90-25f6-4bd9-90b9-27ce2354a77b\",\n      \"title\": \"upper back pain\",\n      \"description\": \"The upper part of my back hurts\"\n    },\n    {\n      \"token\": \"7684f2bb-31df-414b-add9-eeeb1496cc61\",\n      \"title\": \"lower back pain\",\n      \"description\": \"I have lower back pain\"\n    },\n    {\n      \"token\": \"8bec7b05-7894-42ee-8fef-9beb8a326693\",\n      \"title\": \"dull lower back pain\",\n      \"description\": \"My lower back pain is dull\"\n    }\n  ],\n  \"clarification\": [\n    {\n      \"token\": \"c5338e44-8c6f-4f1b-9f2c-0c4d01b99360\"\n    }\n  ],\n  \"_links\": {\n    \"next\": \"https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2dda739f-3c6a-4c71-afb0-8bcf47382cd3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clarification\": {\n    \"token\": \"<uuid>\"\n  },\n  \"interview\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6141c351-b8b6-491c-a0bb-9a1f233df451",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clarification\": {\n    \"token\": \"<uuid>\"\n  },\n  \"interview\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "939d22f3-b504-4f50-9f78-81a0bc112f3f",
+          "name": "Delete complaint",
+          "request": {
+            "name": "Delete complaint",
+            "description": {
+              "content": "Deletes a complaint.\n\nDeleting a complaint will automatically reset the interview to the \"input\" mode and removes any complaints or questions answered that previously followed the complaint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "complaints",
+                ":complaint_token",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "complaint_token",
+                  "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fa1dfbb2-e542-4058-98df-fdafbac10e17",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4150f40f-0d61-49b5-92fd-9b697f8d798c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e3e16c6-9f6d-4986-a241-b8353252e412",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "complaints",
+                    ":complaint_token",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "complaint_token",
+                      "description": "(Required) A UUID-formatted token uniquely identifying a complaint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.sandbox.buoyhealth.com/symptom-checker/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://auth.sandbox.buoyhealth.com/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ff403999-5e53-4ca0-abdc-2be9534e57d8",
+    "name": "Buoy Symptom Checker Complaints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Contact Support:\n Email: alex.nixon@buoyhealth.com",
+      "type": "text/plain"
+    }
+  }
+}
