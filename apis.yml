@@ -18,6 +18,17 @@ specificationVersion: '0.23'
 created: '2026-08-08'
 modified: '2026-08-08'
 tags:
+- Symptom Checker
+- medical-triage
+- Digital Health
+- Healthcare
+- Clinical AI
+- Care Navigation
+- Patient Engagement
+- Diagnosis
+- Telehealth
+- Authentication
+tags_raw:
 - symptom-checker
 - medical-triage
 - digital-health
@@ -39,6 +50,11 @@ apis:
   humanURL: https://www.buoyhealth.com/developers
   baseURL: https://auth.buoyhealth.com/
   tags:
+  - Authentication
+  - OpenID Connect
+  - Identity
+  - Healthcare
+  tags_raw:
   - oauth2
   - openid-connect
   - authentication
@@ -149,6 +165,8 @@ apis:
   humanURL: https://buoyhealth.readme.io/reference/interviews_anonymous
   baseURL: https://api.buoyhealth.com/symptom-checker/v2
   tags:
+  - Query
+  tags_raw:
   - Queries
   properties:
   - type: OpenAPI
