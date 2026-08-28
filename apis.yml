@@ -10,6 +10,18 @@ description: >-
   customizable care-handoff destinations. The API is OAuth 2.0 protected against an Auth0-backed
   authorization server with separate sandbox and production environments, is documented on ReadMe with
   a published OpenAPI 3.0.1 definition and an llms.txt, and Buoy is HITRUST CSF certified.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.buoyhealth.com/cms/images/buoy_logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/buoy-health/refs/heads/main/apis.yml
 x-type: company
