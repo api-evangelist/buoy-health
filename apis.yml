@@ -30,15 +30,15 @@ specificationVersion: '0.23'
 created: '2026-08-08'
 modified: '2026-08-08'
 tags:
-- Symptom Checker
+- symptom-checker
 - medical-triage
-- Digital Health
-- Healthcare
-- Clinical AI
-- Care Navigation
-- Patient Engagement
-- Diagnosis
-- Telehealth
+- digital-health
+- healthcare
+- clinical-ai
+- care-navigation
+- patient-engagement
+- diagnosis
+- telehealth
 - Authentication
 tags_raw:
 - symptom-checker
@@ -63,9 +63,9 @@ apis:
   baseURL: https://auth.buoyhealth.com/
   tags:
   - Authentication
-  - OpenID Connect
+  - openid-connect
   - Identity
-  - Healthcare
+  - healthcare
   tags_raw:
   - oauth2
   - openid-connect
