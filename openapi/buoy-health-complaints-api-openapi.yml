@@ -178,109 +178,6 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
 components:
-  schemas:
-    ReadInterpretationSchema:
-      type: object
-      properties:
-        token:
-          title: token
-          type: string
-          description: A UUID-formatted token uniquely identifying a machine-generated interpretation of a user's complaint.
-          format: uuid
-        title:
-          title: title
-          minLength: 1
-          type: string
-          description: Title of a given machine-generated interpretation of a user's complaint.
-        description:
-          title: description
-          minLength: 1
-          type: string
-          description: Description of a given machine-generated interpretation of a user's complaint.
-    ReadClarificationSchema:
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/ClarificationTokenProperty'
-    CreateComplaintSchema:
-      required:
-      - interview
-      - query
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/ComplaintQueryProperty'
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-    InterviewTokenProperty:
-      title: interview
-      type: string
-      description: A UUID-formatted token uniquely identifying an interview instance.
-      format: uuid
-    ClarificationTokenProperty:
-      title: token
-      type: string
-      format: uuid
-      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
-    ComplaintQueryProperty:
-      title: query
-      minLength: 1
-      type: string
-      description: The user's description of their complaint.
-    SetClarificationSchema:
-      title: clarification
-      required:
-      - token
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/ClarificationTokenProperty'
-    ReadComplaintSchema:
-      type: object
-      properties:
-        token:
-          title: token
-          type: string
-          description: A UUID-formatted token uniquely identifying a user's complaint.
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-        query:
-          $ref: '#/components/schemas/ComplaintQueryProperty'
-        interpretations:
-          type: array
-          description: An object representing a machine-generated interpretation of a user's complaint.
-          items:
-            $ref: '#/components/schemas/ReadInterpretationSchema'
-        clarification:
-          type: array
-          description: An object representing the user's selected machine-generated interpretation of their complaint.
-          items:
-            $ref: '#/components/schemas/ReadClarificationSchema'
-        _links:
-          title: _links
-          type:
-          - object
-          - 'null'
-          description: Conditional links that point to questions required to clarify a complaint.
-          properties:
-            next:
-              type: string
-              description: Absolute URI for next the question in an interview.
-              example: null
-            result:
-              type: string
-              format: uri
-              description: Absolute URI for the result of an interview.
-    UpdateComplaintSchema:
-      required:
-      - clarification
-      - interview
-      type: object
-      properties:
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-        clarification:
-          $ref: '#/components/schemas/SetClarificationSchema'
   examples:
     ComplaintWithClarificationResponse:
       value:
@@ -358,7 +255,121 @@ components:
           description: The hip pain is dull and achy
         clarification:
         - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+  schemas:
+    ReadInterpretationSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          description: A UUID-formatted token uniquely identifying a machine-generated interpretation of a user's complaint.
+          format: uuid
+        title:
+          title: title
+          minLength: 1
+          type: string
+          description: Title of a given machine-generated interpretation of a user's complaint.
+        description:
+          title: description
+          minLength: 1
+          type: string
+          description: Description of a given machine-generated interpretation of a user's complaint.
+    CreateComplaintSchema:
+      required:
+      - interview
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/ComplaintQueryProperty'
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+    ReadClarificationSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    ComplaintQueryProperty:
+      title: query
+      minLength: 1
+      type: string
+      description: The user's description of their complaint.
+    ClarificationTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
+    SetClarificationSchema:
+      title: clarification
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    UpdateComplaintSchema:
+      required:
+      - clarification
+      - interview
+      type: object
+      properties:
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        clarification:
+          $ref: '#/components/schemas/SetClarificationSchema'
+    ReadComplaintSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          description: A UUID-formatted token uniquely identifying a user's complaint.
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        query:
+          $ref: '#/components/schemas/ComplaintQueryProperty'
+        interpretations:
+          type: array
+          description: An object representing a machine-generated interpretation of a user's complaint.
+          items:
+            $ref: '#/components/schemas/ReadInterpretationSchema'
+        clarification:
+          type: array
+          description: An object representing the user's selected machine-generated interpretation of their complaint.
+          items:
+            $ref: '#/components/schemas/ReadClarificationSchema'
+        _links:
+          title: _links
+          type:
+          - object
+          - 'null'
+          description: Conditional links that point to questions required to clarify a complaint.
+          properties:
+            next:
+              type: string
+              description: Absolute URI for next the question in an interview.
+              example: null
+            result:
+              type: string
+              format: uri
+              description: Absolute URI for the result of an interview.
   responses:
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
     401Response:
       description: Unauthorized
       content:
@@ -373,17 +384,6 @@ components:
             Expired token:
               value:
                 detail: Token is invalid or expired (decode)
-    404NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Not found:
-              value:
-                detail: Not found.
   securitySchemes:
     Bearer:
       type: oauth2

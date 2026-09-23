@@ -1,12 +1,7 @@
 {
   "provider": "buoy-health",
   "sources": [
-    "buoy-health-complaints-api-openapi.yml",
-    "buoy-health-intents-api-openapi.yml",
-    "buoy-health-interviews-api-openapi.yml",
-    "buoy-health-queries-api-openapi.yml",
-    "buoy-health-questions-api-openapi.yml",
-    "buoy-health-results-api-openapi.yml"
+    "_original/buoy-health-openapi.json"
   ],
   "outputs": [
     "buoy-health-complaints-api-openapi.yml",
@@ -20,13 +15,24 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "buoy-health-complaints-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "buoy-health-intents-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "buoy-health-interviews-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "buoy-health-queries-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "buoy-health-questions-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "buoy-health-results-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "buoy-health-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "buoy-health-openapi.json: declared missing tag: Complaints",
+    "buoy-health-openapi.json: declared missing tag: Intents",
+    "buoy-health-openapi.json: declared missing tag: Interviews",
+    "buoy-health-openapi.json: declared missing tag: Queries",
+    "buoy-health-openapi.json: declared missing tag: Questions",
+    "buoy-health-openapi.json: declared missing tag: Results",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/buoy-health-symptom-checker-openapi.yml: archived document superseded by a larger archived document",
+    "buoy-health-complaints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "buoy-health-intents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "buoy-health-interviews-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "buoy-health-queries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "buoy-health-questions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "buoy-health-results-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

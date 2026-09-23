@@ -73,6 +73,21 @@ paths:
         '401':
           $ref: '#/components/responses/401Response'
 components:
+  responses:
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
   schemas:
     ReadAutoCompleteQuerySchema:
       type: object
@@ -92,21 +107,6 @@ components:
           items:
             type: string
           description: List of autocompleted complaints based on text input.
-  responses:
-    401Response:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Unauthorized:
-              value:
-                detail: Authentication credentials were not provided.
-            Expired token:
-              value:
-                detail: Token is invalid or expired (decode)
   securitySchemes:
     Bearer:
       type: oauth2

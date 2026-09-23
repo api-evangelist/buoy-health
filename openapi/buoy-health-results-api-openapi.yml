@@ -20,7 +20,7 @@ paths:
       tags:
       - Results
       summary: Read result
-      description: Returns an object describing an interview result. Refer to [the results explainer](doc:explainer-results) for a detailed description of the result endpoint.
+      description: Returns an object describing an interview result. Refer to the results explainer for a detailed description of the result endpoint.
       operationId: results_read
       parameters:
       - name: result_token
@@ -60,6 +60,32 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
 components:
+  responses:
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
   examples:
     ResultsTriageOnlyResponse:
       value:
@@ -279,32 +305,6 @@ components:
                   title: care_notes
                   type: string
                   description: A description of how to care for the potential condition match.
-  responses:
-    401Response:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Unauthorized:
-              value:
-                detail: Authentication credentials were not provided.
-            Expired token:
-              value:
-                detail: Token is invalid or expired (decode)
-    404NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Not found:
-              value:
-                detail: Not found.
   securitySchemes:
     Bearer:
       type: oauth2

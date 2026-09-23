@@ -120,7 +120,7 @@ paths:
       description: 'Updates the interview operation mode one of the three modes: input, protocol, or differential.
 
 
-        For more information on the differences of the interview modes, please refer to the [Interviews explainer page.](doc:explainer-interviews)'
+        For more information on the differences of the interview modes, please refer to the Interviews explainer page.'
       operationId: interviews_update
       parameters:
       - name: interview_token
@@ -186,41 +186,88 @@ paths:
       x-codegen-request-body-name: data
 components:
   schemas:
-    InterviewStartTimeProperty:
-      title: start_time
-      type: string
-      description: The time at which an interview was created in Central Daylight Time (CDT).
-      format: date-time
-    InterviewTokenProperty:
-      title: interview
-      type: string
-      description: A UUID-formatted token uniquely identifying an interview instance.
-      format: uuid
-    LinksProperty:
-      title: _links
+    LocationProperty:
+      title: location
       type: object
-      description: Conditional links that point to the next step of the interview.
+      description: The user's current location.
       properties:
-        next:
-          type: string
-          description: Absolute URI for next the question in an interview.
-          example: null
-        result:
-          type: string
-          description: Absolute URI for the result of an interview.
-          example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
-        interview:
-          type: string
-          description: Absolute URI for an interview. Returned in instances where there are no protocol based questions available in addition to the _msg parameter being set to \"No protocol-based questions or results. Try \'differential\' mode.\"
-        complaints:
-          type: string
-          description: Absolute URI for a complaint. Returned in instances where there are no differential based questions available in addition to the _msg parameter being set to \"No differential-based questions or results. Add or update complaints.\"
-    MsgProperty:
-      title: _msg
-      type:
-      - string
-      - 'null'
-      description: Conditional msgs displayed by the interview.
+        latitude:
+          $ref: '#/components/schemas/LatitudeProperty'
+        longitude:
+          $ref: '#/components/schemas/LongitudeProperty'
+        postal_code:
+          $ref: '#/components/schemas/PostalCodeProperty'
+        country:
+          $ref: '#/components/schemas/CountryProperty'
+        approximate:
+          $ref: '#/components/schemas/ApproximateProperty'
+    InterviewModeProperty:
+      title: mode
+      type: string
+      description: Interview operation mode; input, protocol, or differential.
+      enum:
+      - input
+      - protocol
+      - differential
+    AgeProperty:
+      title: age
+      maximum: 120
+      minimum: 2
+      type: number
+      description: Float between 2 and 120 representing the user's age.
+      example: 63
+    CountryProperty:
+      title: country
+      minLength: 1
+      type: string
+      description: The user's IATA defined country code.
+      example: US
+    ReadUpdateInterviewSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        start_time:
+          $ref: '#/components/schemas/InterviewStartTimeProperty'
+        end_time:
+          $ref: '#/components/schemas/InterviewEndTimeProperty'
+        profile:
+          $ref: '#/components/schemas/ProfileTokenProperty'
+        location:
+          $ref: '#/components/schemas/LocationProperty'
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+        should_display_alarm:
+          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
+        _links:
+          $ref: '#/components/schemas/LinksProperty'
+        _msg:
+          $ref: '#/components/schemas/MsgProperty'
+    AnonymousProfileSchema:
+      title: profile
+      description: A UUID-formatted token uniquely identifying an interview profile.
+      required:
+      - age
+      - sex
+      type: object
+      properties:
+        is_self:
+          $ref: '#/components/schemas/IsSelfProperty_DefaultTrue'
+        age:
+          $ref: '#/components/schemas/AgeProperty'
+        sex:
+          $ref: '#/components/schemas/SexProperty'
+    LongitudeProperty:
+      title: longitude
+      type: number
+      description: Longitude coordinate of user's current location.
+      minimum: -180
+      maximum: 180
+    ApproximateProperty:
+      title: approximate
+      type: boolean
+      description: Indicates that the user did not provide location data and user's location data was determined through an IP address lookup approximation.
+      example: US
     PostalCodeProperty:
       title: postal_code
       maxLength: 32
@@ -228,6 +275,40 @@ components:
       type: string
       description: The user's postal code. In the US, this is equivalent to zip code.
       example: 02118
+    InterviewStartTimeProperty:
+      title: start_time
+      type: string
+      description: The time at which an interview was created in Central Daylight Time (CDT).
+      format: date-time
+    LatitudeProperty:
+      title: latitude
+      type: number
+      description: Latitude coordinate of user's current location.
+      minimum: -90
+      maximum: 90
+    CreateAnonymousInterviewRequestSchema:
+      type: object
+      properties:
+        profile:
+          $ref: '#/components/schemas/AnonymousProfileSchema'
+        location:
+          $ref: '#/components/schemas/CreateLocationProperty'
+      required:
+      - profile
+    SexProperty:
+      title: sex
+      type: string
+      description: The user's sex assigned at birth, either 'm' for male or 'f' for female.
+      enum:
+      - m
+      - f
+      example: m
+    MsgProperty:
+      title: _msg
+      type:
+      - string
+      - 'null'
+      description: Conditional msgs displayed by the interview.
     CreateAnonymousInterviewResponseSchema:
       type: object
       properties:
@@ -250,12 +331,11 @@ components:
       - location
       - start_time
       - token
-    LongitudeProperty:
-      title: longitude
-      type: number
-      description: Longitude coordinate of user's current location.
-      minimum: -180
-      maximum: 180
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
     CreateLocationProperty:
       title: location
       type: object
@@ -269,117 +349,45 @@ components:
           $ref: '#/components/schemas/PostalCodeProperty'
         country:
           $ref: '#/components/schemas/CountryProperty'
-    LatitudeProperty:
-      title: latitude
-      type: number
-      description: Latitude coordinate of user's current location.
-      minimum: -90
-      maximum: 90
     InterviewShouldDisplayAlarmProperty:
       title: should_display_alarm
       type: boolean
       description: A flag indicating if an alarm should be displayed to the user.
-    ApproximateProperty:
-      title: approximate
-      type: boolean
-      description: Indicates that the user did not provide location data and user's location data was determined through an IP address lookup approximation.
-      example: US
-    AnonymousProfileSchema:
-      title: profile
-      description: A UUID-formatted token uniquely identifying an interview profile.
-      required:
-      - age
-      - sex
-      type: object
-      properties:
-        is_self:
-          $ref: '#/components/schemas/IsSelfProperty_DefaultTrue'
-        age:
-          $ref: '#/components/schemas/AgeProperty'
-        sex:
-          $ref: '#/components/schemas/SexProperty'
-    SexProperty:
-      title: sex
-      type: string
-      description: The user's sex assigned at birth, either 'm' for male or 'f' for female.
-      enum:
-      - m
-      - f
-      example: m
-    ProfileTokenProperty:
-      title: profile
-      type: string
-      description: A UUID-formatted token uniquely identifying a user profile.
-      format: uuid
-    ReadUpdateInterviewSchema:
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-        start_time:
-          $ref: '#/components/schemas/InterviewStartTimeProperty'
-        end_time:
-          $ref: '#/components/schemas/InterviewEndTimeProperty'
-        profile:
-          $ref: '#/components/schemas/ProfileTokenProperty'
-        location:
-          $ref: '#/components/schemas/LocationProperty'
-        mode:
-          $ref: '#/components/schemas/InterviewModeProperty'
-        should_display_alarm:
-          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
-        _links:
-          $ref: '#/components/schemas/LinksProperty'
-        _msg:
-          $ref: '#/components/schemas/MsgProperty'
-    CountryProperty:
-      title: country
-      minLength: 1
-      type: string
-      description: The user's IATA defined country code.
-      example: US
-    UpdateInterviewRequestSchema:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/InterviewModeProperty'
-    LocationProperty:
-      title: location
-      type: object
-      description: The user's current location.
-      properties:
-        latitude:
-          $ref: '#/components/schemas/LatitudeProperty'
-        longitude:
-          $ref: '#/components/schemas/LongitudeProperty'
-        postal_code:
-          $ref: '#/components/schemas/PostalCodeProperty'
-        country:
-          $ref: '#/components/schemas/CountryProperty'
-        approximate:
-          $ref: '#/components/schemas/ApproximateProperty'
-    CreateAnonymousInterviewRequestSchema:
-      type: object
-      properties:
-        profile:
-          $ref: '#/components/schemas/AnonymousProfileSchema'
-        location:
-          $ref: '#/components/schemas/CreateLocationProperty'
-      required:
-      - profile
-    AgeProperty:
-      title: age
-      maximum: 120
-      minimum: 2
-      type: number
-      description: Float between 2 and 120 representing the user's age.
-      example: 63
     IsSelfProperty_DefaultTrue:
       title: is_self
       type: boolean
       description: Boolean representing if a user is answering as themselves ('true') or for someone else ('false'). Defaults to 'true' if not provided.
       default: true
       example: true
+    ProfileTokenProperty:
+      title: profile
+      type: string
+      description: A UUID-formatted token uniquely identifying a user profile.
+      format: uuid
+    UpdateInterviewRequestSchema:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+    LinksProperty:
+      title: _links
+      type: object
+      description: Conditional links that point to the next step of the interview.
+      properties:
+        next:
+          type: string
+          description: Absolute URI for next the question in an interview.
+          example: null
+        result:
+          type: string
+          description: Absolute URI for the result of an interview.
+          example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+        interview:
+          type: string
+          description: Absolute URI for an interview. Returned in instances where there are no protocol based questions available in addition to the _msg parameter being set to \"No protocol-based questions or results. Try \'differential\' mode.\"
+        complaints:
+          type: string
+          description: Absolute URI for a complaint. Returned in instances where there are no differential based questions available in addition to the _msg parameter being set to \"No differential-based questions or results. Add or update complaints.\"
     InterviewEndTimeProperty:
       title: end_time
       type:
@@ -387,14 +395,6 @@ components:
       - 'null'
       description: The time at which results were made available in Central Daylight Time (CDT).
       format: date-time
-    InterviewModeProperty:
-      title: mode
-      type: string
-      description: Interview operation mode; input, protocol, or differential.
-      enum:
-      - input
-      - protocol
-      - differential
   responses:
     400MissingProfileResponse:
       description: Bad Request
