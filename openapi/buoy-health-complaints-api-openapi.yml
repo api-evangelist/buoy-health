@@ -179,6 +179,25 @@ paths:
           $ref: '#/components/responses/404NotFound'
 components:
   examples:
+    ComplaintCreateResponse:
+      value:
+        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification: []
     ComplaintWithClarificationResponse:
       value:
         token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
@@ -201,25 +220,6 @@ components:
         - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
         _links:
           next: https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/
-    ComplaintCreateResponse:
-      value:
-        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
-        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
-        query: back pain
-        interpretations:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
-          title: back pain
-          description: I have back pain
-        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
-          title: upper back pain
-          description: The upper part of my back hurts
-        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
-          title: lower back pain
-          description: I have lower back pain
-        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
-          title: dull lower back pain
-          description: My lower back pain is dull
-        clarification: []
     ComplaintListResponse:
       value:
       - token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
@@ -256,24 +256,6 @@ components:
         clarification:
         - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
   schemas:
-    ReadInterpretationSchema:
-      type: object
-      properties:
-        token:
-          title: token
-          type: string
-          description: A UUID-formatted token uniquely identifying a machine-generated interpretation of a user's complaint.
-          format: uuid
-        title:
-          title: title
-          minLength: 1
-          type: string
-          description: Title of a given machine-generated interpretation of a user's complaint.
-        description:
-          title: description
-          minLength: 1
-          type: string
-          description: Description of a given machine-generated interpretation of a user's complaint.
     CreateComplaintSchema:
       required:
       - interview
@@ -284,44 +266,6 @@ components:
           $ref: '#/components/schemas/ComplaintQueryProperty'
         interview:
           $ref: '#/components/schemas/InterviewTokenProperty'
-    ReadClarificationSchema:
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/ClarificationTokenProperty'
-    ComplaintQueryProperty:
-      title: query
-      minLength: 1
-      type: string
-      description: The user's description of their complaint.
-    ClarificationTokenProperty:
-      title: token
-      type: string
-      format: uuid
-      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
-    SetClarificationSchema:
-      title: clarification
-      required:
-      - token
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/ClarificationTokenProperty'
-    InterviewTokenProperty:
-      title: interview
-      type: string
-      description: A UUID-formatted token uniquely identifying an interview instance.
-      format: uuid
-    UpdateComplaintSchema:
-      required:
-      - clarification
-      - interview
-      type: object
-      properties:
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-        clarification:
-          $ref: '#/components/schemas/SetClarificationSchema'
     ReadComplaintSchema:
       type: object
       properties:
@@ -358,18 +302,63 @@ components:
               type: string
               format: uri
               description: Absolute URI for the result of an interview.
+    SetClarificationSchema:
+      title: clarification
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    ClarificationTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
+    ComplaintQueryProperty:
+      title: query
+      minLength: 1
+      type: string
+      description: The user's description of their complaint.
+    ReadInterpretationSchema:
+      type: object
+      properties:
+        token:
+          title: token
+          type: string
+          description: A UUID-formatted token uniquely identifying a machine-generated interpretation of a user's complaint.
+          format: uuid
+        title:
+          title: title
+          minLength: 1
+          type: string
+          description: Title of a given machine-generated interpretation of a user's complaint.
+        description:
+          title: description
+          minLength: 1
+          type: string
+          description: Description of a given machine-generated interpretation of a user's complaint.
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    ReadClarificationSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
+    UpdateComplaintSchema:
+      required:
+      - clarification
+      - interview
+      type: object
+      properties:
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        clarification:
+          $ref: '#/components/schemas/SetClarificationSchema'
   responses:
-    404NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Not found:
-              value:
-                detail: Not found.
     401Response:
       description: Unauthorized
       content:
@@ -384,6 +373,17 @@ components:
             Expired token:
               value:
                 detail: Token is invalid or expired (decode)
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
   securitySchemes:
     Bearer:
       type: oauth2
