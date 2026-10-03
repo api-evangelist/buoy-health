@@ -186,6 +186,99 @@ paths:
       x-codegen-request-body-name: data
 components:
   schemas:
+    CreateLocationProperty:
+      title: location
+      type: object
+      description: The user's location. When creating a new interview, either latitude and longitude or postal_code and country should be provided. If neither are provided, Buoy will attempt to determine a location based off of IP address.
+      properties:
+        latitude:
+          $ref: '#/components/schemas/LatitudeProperty'
+        longitude:
+          $ref: '#/components/schemas/LongitudeProperty'
+        postal_code:
+          $ref: '#/components/schemas/PostalCodeProperty'
+        country:
+          $ref: '#/components/schemas/CountryProperty'
+    InterviewShouldDisplayAlarmProperty:
+      title: should_display_alarm
+      type: boolean
+      description: A flag indicating if an alarm should be displayed to the user.
+    InterviewStartTimeProperty:
+      title: start_time
+      type: string
+      description: The time at which an interview was created in Central Daylight Time (CDT).
+      format: date-time
+    LongitudeProperty:
+      title: longitude
+      type: number
+      description: Longitude coordinate of user's current location.
+      minimum: -180
+      maximum: 180
+    LinksProperty:
+      title: _links
+      type: object
+      description: Conditional links that point to the next step of the interview.
+      properties:
+        next:
+          type: string
+          description: Absolute URI for next the question in an interview.
+          example: null
+        result:
+          type: string
+          description: Absolute URI for the result of an interview.
+          example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
+        interview:
+          type: string
+          description: Absolute URI for an interview. Returned in instances where there are no protocol based questions available in addition to the _msg parameter being set to \"No protocol-based questions or results. Try \'differential\' mode.\"
+        complaints:
+          type: string
+          description: Absolute URI for a complaint. Returned in instances where there are no differential based questions available in addition to the _msg parameter being set to \"No differential-based questions or results. Add or update complaints.\"
+    LocationProperty:
+      title: location
+      type: object
+      description: The user's current location.
+      properties:
+        latitude:
+          $ref: '#/components/schemas/LatitudeProperty'
+        longitude:
+          $ref: '#/components/schemas/LongitudeProperty'
+        postal_code:
+          $ref: '#/components/schemas/PostalCodeProperty'
+        country:
+          $ref: '#/components/schemas/CountryProperty'
+        approximate:
+          $ref: '#/components/schemas/ApproximateProperty'
+    LatitudeProperty:
+      title: latitude
+      type: number
+      description: Latitude coordinate of user's current location.
+      minimum: -90
+      maximum: 90
+    UpdateInterviewRequestSchema:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+    CountryProperty:
+      title: country
+      minLength: 1
+      type: string
+      description: The user's IATA defined country code.
+      example: US
+    PostalCodeProperty:
+      title: postal_code
+      maxLength: 32
+      minLength: 1
+      type: string
+      description: The user's postal code. In the US, this is equivalent to zip code.
+      example: 02118
+    InterviewEndTimeProperty:
+      title: end_time
+      type:
+      - string
+      - 'null'
+      description: The time at which results were made available in Central Daylight Time (CDT).
+      format: date-time
     AgeProperty:
       title: age
       maximum: 120
@@ -193,12 +286,27 @@ components:
       type: number
       description: Float between 2 and 120 representing the user's age.
       example: 63
-    CountryProperty:
-      title: country
-      minLength: 1
-      type: string
-      description: The user's IATA defined country code.
-      example: US
+    ReadUpdateInterviewSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        start_time:
+          $ref: '#/components/schemas/InterviewStartTimeProperty'
+        end_time:
+          $ref: '#/components/schemas/InterviewEndTimeProperty'
+        profile:
+          $ref: '#/components/schemas/ProfileTokenProperty'
+        location:
+          $ref: '#/components/schemas/LocationProperty'
+        mode:
+          $ref: '#/components/schemas/InterviewModeProperty'
+        should_display_alarm:
+          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
+        _links:
+          $ref: '#/components/schemas/LinksProperty'
+        _msg:
+          $ref: '#/components/schemas/MsgProperty'
     CreateAnonymousInterviewResponseSchema:
       type: object
       properties:
@@ -221,119 +329,26 @@ components:
       - location
       - start_time
       - token
-    ProfileTokenProperty:
-      title: profile
-      type: string
-      description: A UUID-formatted token uniquely identifying a user profile.
-      format: uuid
-    InterviewModeProperty:
-      title: mode
-      type: string
-      description: Interview operation mode; input, protocol, or differential.
-      enum:
-      - input
-      - protocol
-      - differential
-    SexProperty:
-      title: sex
-      type: string
-      description: The user's sex assigned at birth, either 'm' for male or 'f' for female.
-      enum:
-      - m
-      - f
-      example: m
-    UpdateInterviewRequestSchema:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/InterviewModeProperty'
-    CreateLocationProperty:
-      title: location
-      type: object
-      description: The user's location. When creating a new interview, either latitude and longitude or postal_code and country should be provided. If neither are provided, Buoy will attempt to determine a location based off of IP address.
-      properties:
-        latitude:
-          $ref: '#/components/schemas/LatitudeProperty'
-        longitude:
-          $ref: '#/components/schemas/LongitudeProperty'
-        postal_code:
-          $ref: '#/components/schemas/PostalCodeProperty'
-        country:
-          $ref: '#/components/schemas/CountryProperty'
-    LinksProperty:
-      title: _links
-      type: object
-      description: Conditional links that point to the next step of the interview.
-      properties:
-        next:
-          type: string
-          description: Absolute URI for next the question in an interview.
-          example: null
-        result:
-          type: string
-          description: Absolute URI for the result of an interview.
-          example: http://sandbox.buoyhealth.com/api/results/fae7f712-15ce-4002-bf79-a80ff4c80f07/
-        interview:
-          type: string
-          description: Absolute URI for an interview. Returned in instances where there are no protocol based questions available in addition to the _msg parameter being set to \"No protocol-based questions or results. Try \'differential\' mode.\"
-        complaints:
-          type: string
-          description: Absolute URI for a complaint. Returned in instances where there are no differential based questions available in addition to the _msg parameter being set to \"No differential-based questions or results. Add or update complaints.\"
-    LatitudeProperty:
-      title: latitude
-      type: number
-      description: Latitude coordinate of user's current location.
-      minimum: -90
-      maximum: 90
-    InterviewEndTimeProperty:
-      title: end_time
-      type:
-      - string
-      - 'null'
-      description: The time at which results were made available in Central Daylight Time (CDT).
-      format: date-time
-    InterviewStartTimeProperty:
-      title: start_time
-      type: string
-      description: The time at which an interview was created in Central Daylight Time (CDT).
-      format: date-time
-    ApproximateProperty:
-      title: approximate
+    IsSelfProperty_DefaultTrue:
+      title: is_self
       type: boolean
-      description: Indicates that the user did not provide location data and user's location data was determined through an IP address lookup approximation.
-      example: US
+      description: Boolean representing if a user is answering as themselves ('true') or for someone else ('false'). Defaults to 'true' if not provided.
+      default: true
+      example: true
     InterviewTokenProperty:
       title: interview
       type: string
       description: A UUID-formatted token uniquely identifying an interview instance.
       format: uuid
-    MsgProperty:
-      title: _msg
-      type:
-      - string
-      - 'null'
-      description: Conditional msgs displayed by the interview.
-    ReadUpdateInterviewSchema:
+    CreateAnonymousInterviewRequestSchema:
       type: object
       properties:
-        token:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-        start_time:
-          $ref: '#/components/schemas/InterviewStartTimeProperty'
-        end_time:
-          $ref: '#/components/schemas/InterviewEndTimeProperty'
         profile:
-          $ref: '#/components/schemas/ProfileTokenProperty'
+          $ref: '#/components/schemas/AnonymousProfileSchema'
         location:
-          $ref: '#/components/schemas/LocationProperty'
-        mode:
-          $ref: '#/components/schemas/InterviewModeProperty'
-        should_display_alarm:
-          $ref: '#/components/schemas/InterviewShouldDisplayAlarmProperty'
-        _links:
-          $ref: '#/components/schemas/LinksProperty'
-        _msg:
-          $ref: '#/components/schemas/MsgProperty'
+          $ref: '#/components/schemas/CreateLocationProperty'
+      required:
+      - profile
     AnonymousProfileSchema:
       title: profile
       description: A UUID-formatted token uniquely identifying an interview profile.
@@ -348,66 +363,39 @@ components:
           $ref: '#/components/schemas/AgeProperty'
         sex:
           $ref: '#/components/schemas/SexProperty'
-    PostalCodeProperty:
-      title: postal_code
-      maxLength: 32
-      minLength: 1
+    SexProperty:
+      title: sex
       type: string
-      description: The user's postal code. In the US, this is equivalent to zip code.
-      example: 02118
-    LocationProperty:
-      title: location
-      type: object
-      description: The user's current location.
-      properties:
-        latitude:
-          $ref: '#/components/schemas/LatitudeProperty'
-        longitude:
-          $ref: '#/components/schemas/LongitudeProperty'
-        postal_code:
-          $ref: '#/components/schemas/PostalCodeProperty'
-        country:
-          $ref: '#/components/schemas/CountryProperty'
-        approximate:
-          $ref: '#/components/schemas/ApproximateProperty'
-    IsSelfProperty_DefaultTrue:
-      title: is_self
+      description: The user's sex assigned at birth, either 'm' for male or 'f' for female.
+      enum:
+      - m
+      - f
+      example: m
+    InterviewModeProperty:
+      title: mode
+      type: string
+      description: Interview operation mode; input, protocol, or differential.
+      enum:
+      - input
+      - protocol
+      - differential
+    ProfileTokenProperty:
+      title: profile
+      type: string
+      description: A UUID-formatted token uniquely identifying a user profile.
+      format: uuid
+    ApproximateProperty:
+      title: approximate
       type: boolean
-      description: Boolean representing if a user is answering as themselves ('true') or for someone else ('false'). Defaults to 'true' if not provided.
-      default: true
-      example: true
-    LongitudeProperty:
-      title: longitude
-      type: number
-      description: Longitude coordinate of user's current location.
-      minimum: -180
-      maximum: 180
-    InterviewShouldDisplayAlarmProperty:
-      title: should_display_alarm
-      type: boolean
-      description: A flag indicating if an alarm should be displayed to the user.
-    CreateAnonymousInterviewRequestSchema:
-      type: object
-      properties:
-        profile:
-          $ref: '#/components/schemas/AnonymousProfileSchema'
-        location:
-          $ref: '#/components/schemas/CreateLocationProperty'
-      required:
-      - profile
+      description: Indicates that the user did not provide location data and user's location data was determined through an IP address lookup approximation.
+      example: US
+    MsgProperty:
+      title: _msg
+      type:
+      - string
+      - 'null'
+      description: Conditional msgs displayed by the interview.
   responses:
-    400MissingProfileResponse:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Bad request:
-              value:
-                profile:
-                - This field is required.
     401Response:
       description: Unauthorized
       content:
@@ -422,6 +410,18 @@ components:
             Expired token:
               value:
                 detail: Token is invalid or expired (decode)
+    400MissingProfileResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Bad request:
+              value:
+                profile:
+                - This field is required.
   securitySchemes:
     Bearer:
       type: oauth2
