@@ -178,27 +178,84 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
 components:
-  schemas:
-    ClarificationTokenProperty:
-      title: token
-      type: string
-      format: uuid
-      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
-    InterviewTokenProperty:
-      title: interview
-      type: string
-      description: A UUID-formatted token uniquely identifying an interview instance.
-      format: uuid
-    UpdateComplaintSchema:
-      required:
-      - clarification
-      - interview
-      type: object
-      properties:
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
+  examples:
+    ComplaintListResponse:
+      value:
+      - token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
         clarification:
-          $ref: '#/components/schemas/SetClarificationSchema'
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360.
+      - token: 7d4eabe2-e5f2-42b5-8f7e-a33e140a4dbc
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: hip pain
+        interpretations:
+        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+          title: hip pain
+          description: I have hip pain
+        - token: ed9895d8-fdd3-4a17-a9a6-14fcd01ccb69
+          title: deep, throbbing hip pain
+          description: The hip pain is deep and throbbing
+        - token: 96bd510d-1fea-4420-9717-66b7074800ff
+          title: dull, achy hip pain
+          description: The hip pain is dull and achy
+        clarification:
+        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+    ComplaintWithClarificationResponse:
+      value:
+        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+        _links:
+          next: https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/
+    ComplaintCreateResponse:
+      value:
+        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
+        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
+        query: back pain
+        interpretations:
+        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
+          title: back pain
+          description: I have back pain
+        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
+          title: upper back pain
+          description: The upper part of my back hurts
+        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
+          title: lower back pain
+          description: I have lower back pain
+        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
+          title: dull lower back pain
+          description: My lower back pain is dull
+        clarification: []
+  schemas:
     ReadInterpretationSchema:
       type: object
       properties:
@@ -217,29 +274,36 @@ components:
           minLength: 1
           type: string
           description: Description of a given machine-generated interpretation of a user's complaint.
+    UpdateComplaintSchema:
+      required:
+      - clarification
+      - interview
+      type: object
+      properties:
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
+        clarification:
+          $ref: '#/components/schemas/SetClarificationSchema'
+    ClarificationTokenProperty:
+      title: token
+      type: string
+      format: uuid
+      description: A UUID-formatted token uniquely identifying a clarification of a complaint.
+    InterviewTokenProperty:
+      title: interview
+      type: string
+      description: A UUID-formatted token uniquely identifying an interview instance.
+      format: uuid
+    ReadClarificationSchema:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/ClarificationTokenProperty'
     ComplaintQueryProperty:
       title: query
       minLength: 1
       type: string
       description: The user's description of their complaint.
-    CreateComplaintSchema:
-      required:
-      - interview
-      - query
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/ComplaintQueryProperty'
-        interview:
-          $ref: '#/components/schemas/InterviewTokenProperty'
-    SetClarificationSchema:
-      title: clarification
-      required:
-      - token
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/ClarificationTokenProperty'
     ReadComplaintSchema:
       type: object
       properties:
@@ -276,23 +340,25 @@ components:
               type: string
               format: uri
               description: Absolute URI for the result of an interview.
-    ReadClarificationSchema:
+    SetClarificationSchema:
+      title: clarification
+      required:
+      - token
       type: object
       properties:
         token:
           $ref: '#/components/schemas/ClarificationTokenProperty'
+    CreateComplaintSchema:
+      required:
+      - interview
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/ComplaintQueryProperty'
+        interview:
+          $ref: '#/components/schemas/InterviewTokenProperty'
   responses:
-    404NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Not found:
-              value:
-                detail: Not found.
     401Response:
       description: Unauthorized
       content:
@@ -307,83 +373,17 @@ components:
             Expired token:
               value:
                 detail: Token is invalid or expired (decode)
-  examples:
-    ComplaintCreateResponse:
-      value:
-        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
-        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
-        query: back pain
-        interpretations:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
-          title: back pain
-          description: I have back pain
-        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
-          title: upper back pain
-          description: The upper part of my back hurts
-        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
-          title: lower back pain
-          description: I have lower back pain
-        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
-          title: dull lower back pain
-          description: My lower back pain is dull
-        clarification: []
-    ComplaintWithClarificationResponse:
-      value:
-        token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
-        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
-        query: back pain
-        interpretations:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
-          title: back pain
-          description: I have back pain
-        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
-          title: upper back pain
-          description: The upper part of my back hurts
-        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
-          title: lower back pain
-          description: I have lower back pain
-        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
-          title: dull lower back pain
-          description: My lower back pain is dull
-        clarification:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
-        _links:
-          next: https://sandbox.buoyhealth.com/api/questions/d1f68632-c8c5-4bc0-9b57-ccb97cb1293b/
-    ComplaintListResponse:
-      value:
-      - token: 290197ae-fa22-42a9-9ce4-0b771a8ace2c
-        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
-        query: back pain
-        interpretations:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360
-          title: back pain
-          description: I have back pain
-        - token: 4468fa90-25f6-4bd9-90b9-27ce2354a77b
-          title: upper back pain
-          description: The upper part of my back hurts
-        - token: 7684f2bb-31df-414b-add9-eeeb1496cc61
-          title: lower back pain
-          description: I have lower back pain
-        - token: 8bec7b05-7894-42ee-8fef-9beb8a326693
-          title: dull lower back pain
-          description: My lower back pain is dull
-        clarification:
-        - token: c5338e44-8c6f-4f1b-9f2c-0c4d01b99360.
-      - token: 7d4eabe2-e5f2-42b5-8f7e-a33e140a4dbc
-        interview: 4cfcc68d-d365-4af5-8b4d-15881259e0be
-        query: hip pain
-        interpretations:
-        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
-          title: hip pain
-          description: I have hip pain
-        - token: ed9895d8-fdd3-4a17-a9a6-14fcd01ccb69
-          title: deep, throbbing hip pain
-          description: The hip pain is deep and throbbing
-        - token: 96bd510d-1fea-4420-9717-66b7074800ff
-          title: dull, achy hip pain
-          description: The hip pain is dull and achy
-        clarification:
-        - token: e1943b59-94f9-496d-a663-395c4cb1e0b1
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
   securitySchemes:
     Bearer:
       type: oauth2

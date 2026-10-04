@@ -61,22 +61,6 @@ paths:
           $ref: '#/components/responses/404NotFound'
 components:
   examples:
-    ResultsTriageOnlyResponse:
-      value:
-        token: db38c893-1865-4683-87f4-abcc00d7032d
-        alarm: true
-        undiagnosed: true
-        differential: []
-        triage:
-          token: 2873df99-7ef1-45c3-bf1e-ecaf30b657cc
-          level: 7
-          description: Emergency medical service
-        triage_explanation:
-          explanation: Because of your blue lips or tongue and difficulty getting enough air, you may have coronavirus.
-          potential_condition:
-            name: coronavirus
-            overview: Call 911 and mention you may have coronavirus so they can prepare.
-            care_notes: There is no treatment to cure coronavirus (COVID-19), but it is advised to see a healthcare provider for testing. Mild symptoms can be treated the same as one would do for the common cold or flu. Very young children, the elderly, and people with known (heart- or lung) disease or a suppressed immune system can become more ill. These people might need extra support or treatment to help with breathing issues. It is very important to prevent the virus from spreading by washing hands frequently, covering mouth and nose while sneezing and coughing, and by staying away from other people when sick.
     ResultsDifferentialAndTriageResponse:
       value:
         token: eba8c893-1865-4683-87f4-abcc00d7032e
@@ -139,18 +123,23 @@ components:
         triage_explanation:
           explanation: ''
           potential_condition: null
+    ResultsTriageOnlyResponse:
+      value:
+        token: db38c893-1865-4683-87f4-abcc00d7032d
+        alarm: true
+        undiagnosed: true
+        differential: []
+        triage:
+          token: 2873df99-7ef1-45c3-bf1e-ecaf30b657cc
+          level: 7
+          description: Emergency medical service
+        triage_explanation:
+          explanation: Because of your blue lips or tongue and difficulty getting enough air, you may have coronavirus.
+          potential_condition:
+            name: coronavirus
+            overview: Call 911 and mention you may have coronavirus so they can prepare.
+            care_notes: There is no treatment to cure coronavirus (COVID-19), but it is advised to see a healthcare provider for testing. Mild symptoms can be treated the same as one would do for the common cold or flu. Very young children, the elderly, and people with known (heart- or lung) disease or a suppressed immune system can become more ill. These people might need extra support or treatment to help with breathing issues. It is very important to prevent the virus from spreading by washing hands frequently, covering mouth and nose while sneezing and coughing, and by staying away from other people when sick.
   responses:
-    404NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Not found:
-              value:
-                detail: Not found.
     401Response:
       description: Unauthorized
       content:
@@ -165,6 +154,17 @@ components:
             Expired token:
               value:
                 detail: Token is invalid or expired (decode)
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Not found:
+              value:
+                detail: Not found.
   schemas:
     ReadResultsSchema:
       type: object

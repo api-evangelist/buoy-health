@@ -174,6 +174,20 @@ components:
               value: '<h1>Not Found</h1>
 
                 <p>The requested resource was not found on this server.</p>'
+    401Response:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: {}
+          examples:
+            Unauthorized:
+              value:
+                detail: Authentication credentials were not provided.
+            Expired token:
+              value:
+                detail: Token is invalid or expired (decode)
     400Intent:
       description: Bad Request
       content:
@@ -218,21 +232,28 @@ components:
               value:
                 decision:
                 - <invalid_decision> is not a valid choice.
-    401Response:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: {}
-          examples:
-            Unauthorized:
-              value:
-                detail: Authentication credentials were not provided.
-            Expired token:
-              value:
-                detail: Token is invalid or expired (decode)
   schemas:
+    ListIntentSchema:
+      required:
+      - decision
+      - event
+      - interview
+      type: array
+      items:
+        type: object
+        properties:
+          token:
+            title: token
+            description: A UUID-formatted token uniquely identifying an intent.
+            type: string
+            format: uuid
+            readOnly: true
+          interview:
+            $ref: '#/components/schemas/InterviewTokenProperty'
+          event:
+            $ref: '#/components/schemas/IntentEventProperty'
+          decision:
+            $ref: '#/components/schemas/IntentDecisionProperty'
     InterviewTokenProperty:
       title: interview
       type: string
@@ -271,27 +292,13 @@ components:
       - SPECIALIST
       - URGENT
       - EMERGENCY
-    ListIntentSchema:
-      required:
-      - decision
-      - event
-      - interview
-      type: array
-      items:
-        type: object
-        properties:
-          token:
-            title: token
-            description: A UUID-formatted token uniquely identifying an intent.
-            type: string
-            format: uuid
-            readOnly: true
-          interview:
-            $ref: '#/components/schemas/InterviewTokenProperty'
-          event:
-            $ref: '#/components/schemas/IntentEventProperty'
-          decision:
-            $ref: '#/components/schemas/IntentDecisionProperty'
+    IntentEventProperty:
+      title: event
+      description: A string indicating whether an intent was captured at the start of an interview ("INTERVIEW_START") or after results have been shown ("INTERVIEW_RESULT").
+      type: string
+      enum:
+      - INTERVIEW_START
+      - INTERVIEW_RESULT
     CreateIntentSchema:
       required:
       - decision
@@ -306,13 +313,6 @@ components:
           $ref: '#/components/schemas/IntentEventProperty'
         decision:
           $ref: '#/components/schemas/IntentDecisionProperty'
-    IntentEventProperty:
-      title: event
-      description: A string indicating whether an intent was captured at the start of an interview ("INTERVIEW_START") or after results have been shown ("INTERVIEW_RESULT").
-      type: string
-      enum:
-      - INTERVIEW_START
-      - INTERVIEW_RESULT
   examples:
     IntentInterviewResultResponse:
       value:
