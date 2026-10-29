@@ -64,5 +64,130 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Buoy Health is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.hiive.com/securities/buoy-health-stock
+Buoy Health is a Boston-based digital health company whose clinically-trained AI symptom checker and triage engine is offered to health systems, payers and employers as an embeddable API. The Buoy Symptom Checker API v2.0 exposes a conversational triage interview as REST resources — interviews, complaints, queries, intents, questions and results — so an integrator can create a de-identified anonymous interview from basic demographics, accept a chief complaint, walk an adaptively generated question sequence, and read back a differential diagnosis with a recommended level of care and customizable care-handoff destinations. The API is OAuth 2.0 protected against an Auth0-backed authorization server with separate sandbox and production environments, is documented on ReadMe with a published OpenAPI 3.0.1 definition and an llms.txt, and Buoy is HITRUST CSF certified.
+
+**Areas:** Symptom Checker · medical-triage · Digital Health · Healthcare · Clinical AI · Care Navigation · Patient Engagement · Diagnosis · Telehealth · Authentication
+
+## Buoy Health on APIs.io
+
+Everything profiled for Buoy Health is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/buoy-health/](https://apis.io/providers/buoy-health/)** — or go straight to one of the APIs or properties below.
+
+### APIs (7)
+
+- [Buoy Authorization Server](https://apis.io/apis/buoy-health/buoy-authorization-server/) — Auth0-backed OAuth 2.0 / OpenID Connect authorization server that issues the bearer tokens the Buoy Symptom Checker API requires. Publishes anonymous RFC…
+- [Buoy Health Complaints API](https://apis.io/apis/buoy-health/buoy-health-complaints-api/) — The Complaints API from Buoy Health — 2 operation(s) for complaints.
+- [Buoy Health Intents API](https://apis.io/apis/buoy-health/buoy-health-intents-api/) — The Intents API from Buoy Health — 2 operation(s) for intents.
+- [Buoy Health Interviews API](https://apis.io/apis/buoy-health/buoy-health-interviews-api/) — The Interviews API from Buoy Health — 2 operation(s) for interviews.
+- [Buoy Health Queries API](https://apis.io/apis/buoy-health/buoy-health-queries-api/) — The Queries API from Buoy Health — 1 operation(s) for queries.
+- [Buoy Health Questions API](https://apis.io/apis/buoy-health/buoy-health-questions-api/) — The Questions API from Buoy Health — 3 operation(s) for questions.
+- [Buoy Health Results API](https://apis.io/apis/buoy-health/buoy-health-results-api/) — The Results API from Buoy Health — 1 operation(s) for results.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [buoy-health](https://apis.io/servers/buoy-health/buoy-health/)
+
+#### Collections (6)
+
+Postman and Open Collection request collections.
+
+- [Buoy Symptom Checker Complaints API](https://apis.io/collections/buoy-health/open-buoy-health-complaints-api/)
+- [Buoy Symptom Checker Intents API](https://apis.io/collections/buoy-health/open-buoy-health-intents-api/)
+- [Buoy Symptom Checker Interviews API](https://apis.io/collections/buoy-health/open-buoy-health-interviews-api/)
+- [Buoy Symptom Checker Queries API](https://apis.io/collections/buoy-health/open-buoy-health-queries-api/)
+- [Buoy Symptom Checker Questions API](https://apis.io/collections/buoy-health/open-buoy-health-questions-api/)
+- [Buoy Symptom Checker Results API](https://apis.io/collections/buoy-health/open-buoy-health-results-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Buoy Health Symptom Checker Overlay](https://apis.io/overlays/buoy-health/buoy-health-symptom-checker-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Buoy Health Authentication](https://apis.io/security/buoy-health/buoy-health-authentication/)
+- [Buoy Health Domain Security](https://apis.io/security/buoy-health/buoy-health-domain-security/)
+- [Buoy Health Vulnerability Disclosure](https://apis.io/security/buoy-health/buoy-health-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Buoy Health Scopes](https://apis.io/scopes/buoy-health/buoy-health-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.buoyhealth.com/)
+- [Documentation](https://buoyhealth.readme.io/reference/interviews_anonymous)
+- [API reference](https://buoyhealth.readme.io/reference)
+- [Support](https://www.buoyhealth.com/contact-us)
+- [Blog](https://www.buoyhealth.com/blog)
+- [Security](https://www.buoyhealth.com/security-and-privacy)
+- [Compliance](https://www.buoyhealth.com/security-and-privacy)
+- [Terms of service](https://www.buoyhealth.com/terms)
+- [Privacy policy](https://www.buoyhealth.com/privacy)
+
+## API Evangelist rating
+
+**Kin Score 45.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 52.1 |
+| Contract governance | 18.2 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 53.0 |
+| Access clarity | 28.9 |
+
+**Agent readiness 34.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 51.6** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/buoy-health/](https://apis.io/providers/buoy-health/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Buoy Health: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/buoy-health/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
